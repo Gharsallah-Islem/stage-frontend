@@ -1,0 +1,239 @@
+:host {
+    --primary: #6366f1;
+    --success: #22c55e;
+    --warning: #eab308;
+    --danger: #ef4444;
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.requests-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.5rem;
+    color: var(--text);
+    margin-bottom: 2rem;
+}
+
+.section-title .icon {
+    background: var(--primary);
+    color: white;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-title .badge {
+    background: var(--primary);
+    color: white;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-left: auto;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.grid-header {
+    display: contents;
+}
+
+.grid-header .header-cell {
+    padding: 1rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.grid-body {
+    display: contents;
+}
+
+.grid-row {
+    display: contents;
+    position: relative;
+}
+
+.grid-row:hover .grid-cell {
+    background-color: rgba(99, 102, 241, 0.03);
+}
+
+.grid-cell {
+    padding: 1rem 1.5rem;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.user-info .avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-info .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.email-link {
+    color: var(--primary);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.work-id {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.date-badge {
+    white-space: nowrap;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+}
+
+.status-pill.pending {
+    background: rgba(234, 179, 8, 0.1);
+    color: var(--warning);
+}
+
+.status-pill.approved {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+
+.status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-button {
+    width: 6rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-button.approve {
+    background: var(--success);
+    color: white;
+}
+
+.icon-button.revoke {
+    background: var(--danger);
+    color: white;
+}
+
+.icon-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@media (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        background: transparent;
+        gap: 0.5rem;
+    }
+
+    .grid-header {
+        display: none;
+    }
+
+    .grid-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+        background: var(--surface);
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 0.5rem;
+    }
+
+    .grid-cell {
+        padding: 0.5rem;
+        background: transparent !important;
+    }
+
+    .action-buttons {
+        grid-column: span 2;
+        justify-content: flex-end;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,34 @@
+<div class="modules-container">
+    <h2>📚 All Modules</h2>
+
+    <button class="add-btn" (click)="openAddModule()">➕ Add Module</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Module Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let module of modules" @rowAnimation>
+                <td>{{ module.name }}</td>
+                <td>
+                    <button (click)="openEditModule(module)">✏️ Edit</button>
+                    <button class="delete-btn" (click)="deleteModule(module.id)">🗑️ Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="modal" *ngIf="isModalOpen">
+        <div class="modal-content">
+            <h3>{{ selectedModule ? 'Edit Module' : 'Add Module' }}</h3>
+            <input type="text" [(ngModel)]="moduleName" placeholder="Module Name" />
+            <div class="modal-actions">
+                <button (click)="saveModule()">💾 Save</button>
+                <button class="cancel-btn" (click)="closeModal()">❌ Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

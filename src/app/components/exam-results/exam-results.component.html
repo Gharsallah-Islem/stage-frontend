@@ -1,0 +1,19 @@
+<div class="min-h-screen bg-gray-100 p-8">
+  <h1 class="text-3xl font-bold mb-8">Exam Results</h1>
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <table class="w-full">
+      <thead>
+      <tr>
+        <th class="text-left">Chapter</th>
+        <th class="text-left">Score</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let result of results">
+        <td>{{ result.chapter }}</td>
+        <td>{{ result.score }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

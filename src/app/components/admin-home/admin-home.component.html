@@ -1,0 +1,24 @@
+<div class="dashboard">
+    <div class="cards">
+        <div class="card">
+            <span>👥</span>
+            <h2>Total Users</h2>
+            <div class="metric">{{ totalUsers | number }}</div>
+        </div>
+
+        <div class="card">
+            <span>📊</span>
+            <h2>Avg Score Difference</h2>
+            <div class="metric" [class.positive]="averageScore >= 0" [class.negative]="averageScore < 0">
+                {{ averageScore | number:'1.1-1' }}%
+            </div>
+        </div>
+    </div>
+
+    <h3>Training Needs Matrix</h3>
+    <div class="chart-container">
+        <div class="chart-wrapper">
+            <canvas id="trainingMatrix"></canvas>
+        </div>
+    </div>
+</div>

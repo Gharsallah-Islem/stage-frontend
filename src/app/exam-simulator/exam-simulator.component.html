@@ -1,0 +1,277 @@
+<nav class="smart-navbar" [class.scrolled]="isScrolled">
+    <div class="nav-container">
+        <a routerLink="/dashboard" class="brand-logo">
+            <span class="brand-text">OACA Hub</span>
+        </a>
+
+        <div class="nav-links" [class.active]="isMobileMenuOpen">
+            <div class="nav-link-wrapper">
+                <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                    class="nav-link">
+                    <i class="fas fa-home link-icon"></i>
+                    <span>Dashboard</span>
+                    <div class="link-underline"></div>
+                </a>
+
+                <a routerLink="/exam" routerLinkActive="active" class="nav-link">
+                    <i class="fas fa-puzzle-piece link-icon"></i>
+                    <span>Exam Simulator</span>
+                    <div class="link-underline"></div>
+                </a>
+
+                <a routerLink="/question-bank" routerLinkActive="active" class="nav-link">
+                    <i class="fas fa-database link-icon"></i>
+                    <span>Question Bank</span>
+                    <div class="link-underline"></div>
+                </a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="user-menu">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+
+        <button class="hamburger" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+    </div>
+</nav>
+<div class="cyber-glass exam-simulator">
+    <!-- Start Screen -->
+    <div *ngIf="!examStarted" class="start-screen">
+        <div class="holographic-header">
+            <h1 class="neon-title">OACA Aviation Exam Simulator</h1>
+            <div class="particle-grid"></div>
+        </div>
+
+        <div class="exam-meta">
+            <div class="meta-card">
+                <i class="fas fa-layer-group"></i>
+                <h3>{{ questions.length }} Questions</h3>
+                <p>Covering key aviation topics</p>
+            </div>
+            <div class="meta-card">
+                <i class="fas fa-clock"></i>
+                <h3>30 Minute Limit</h3>
+                <p>Real-time pressure simulation</p>
+            </div>
+            <div class="meta-card">
+                <i class="fas fa-brain"></i>
+                <h3>AI-Powered</h3>
+                <p>Smart analysis & tutoring</p>
+            </div>
+        </div>
+
+        <button class="cyber-button start-btn" (click)="startExam()">
+            <span class="btn-glow"></span>
+            <span class="btn-content">
+                <i class="fas fa-rocket"></i>
+                LAUNCH EXAM
+            </span>
+        </button>
+    </div>
+
+    <!-- Exam Interface -->
+    <div *ngIf="examStarted && !examFinished" [@questionNavigation]="navigationState.direction">
+        <div class="exam-header">
+            <div class="timer holographic-display">
+                <i class="fas fa-stopwatch"></i>
+                {{ formattedTime }}
+                <div class="hologram-effect"></div>
+            </div>
+            <div class="progress-tracker">
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="(currentQuestionIndex + 1) / questions.length * 100">
+                        <div class="progress-glow"></div>
+                    </div>
+                </div>
+                <span class="progress-text">
+                    Stage {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+                </span>
+            </div>
+        </div>
+
+        <div class="question-card holographic-card">
+            <div class="question-header">
+                <span class="difficulty-badge {{ currentQuestion.difficulty }} glitch">
+                    {{ currentQuestion.difficulty | uppercase }}
+                </span>
+                <span class="category-tag">
+                    <i class="fas fa-tag"></i>
+                    {{ currentQuestion.category }}
+                </span>
+            </div>
+
+            <h2 class="question-text gradient-text">
+                {{ currentQuestion.text }}
+            </h2>
+
+            <div class="options-grid">
+                <div *ngFor="let option of currentQuestion.options; let i = index" class="option-card cyber-option"
+                    [class.selected]="selectedAnswer === i" (click)="selectedAnswer = i"
+                    [@optionHover]="selectedAnswer === i ? 'selected' : 'default'">
+                    <div class="option-hologram"></div>
+                    <div class="option-letter">{{ 'ABCDEF'[i] }}</div>
+                    <div class="option-text" style="color: black;">{{ option.text }}</div>
+                    <div class="option-trail"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-controls">
+            <button class="nav-btn prev-btn" (click)="navigateToQuestion('previous')"
+                [disabled]="currentQuestionIndex === 0 || navigationState.isAnimating">
+                <i class="fas fa-chevron-dna-left"></i>
+                PREVIOUS &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="btn-arc"></div>
+            </button>
+
+            <button *ngIf="currentQuestionIndex < questions.length - 1" class="nav-btn next-btn"
+                (click)="navigateToQuestion('next')" [disabled]="navigationState.isAnimating">
+                | NEXT
+                <i class="fas fa-chevron-dna-right"></i>
+                <div class="btn-arc"></div>
+            </button>
+
+            <button *ngIf="currentQuestionIndex === questions.length - 1" class="nav-btn submit-btn"
+                (click)="navigateToQuestion('next')" [disabled]="navigationState.isAnimating">
+                COMPLETE EXAM
+                <i class="fas fa-paper-plane"></i>
+                <div class="btn-arc"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div *ngIf="examFinished" class="results-screen">
+        <div class="results-header">
+            <h1 class="neon-title">Flight Review Complete</h1>
+            <div class="score-display holographic-card">
+                <div class="score-badge">
+                    <span class="score-value">{{ correctAnswersCount }}</span>
+                    <span class="score-label">Correct</span>
+                </div>
+                <div class="score-divider"></div>
+                <div class="score-badge">
+                    <span class="score-value">{{ questions.length - correctAnswersCount }}</span>
+                    <span class="score-label">To Review</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Study Plan -->
+        <div class="ai-study-plan holographic-card">
+            <h3 class="ai-section-title">
+                <i class="fas fa-brain-circuit"></i>
+                Personalized Flight Path
+            </h3>
+
+            <div *ngIf="isGeneratingPlan" class="ai-loading">
+                <div class="holographic-loader"></div>
+                <p>Charting your learning trajectory...</p>
+            </div>
+
+            <div *ngIf="aiStudyPlan" class="plan-sections">
+                <div class="plan-section weak-areas">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Focus Zones</h4>
+                    <ul>
+                        <li *ngFor="let area of aiStudyPlan.weakAreas">
+                            {{ area }} <i class="fas fa-bullseye"></i>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="plan-section resources">
+                    <h4><i class="fas fa-books"></i> Flight Manuals</h4>
+                    <div class="resource-grid">
+                        <div *ngFor="let resource of aiStudyPlan.recommendedResources" class="resource-card">
+                            <i class="fas fa-file-certificate"></i>
+                            {{ resource }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-section practice">
+                    <h4><i class="fas fa-drill"></i> Training Exercises</h4>
+                    <div *ngFor="let question of aiStudyPlan.practiceQuestions" class="ai-question">
+                        <i class="fas fa-question"></i>
+                        {{ question }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Chat Tutor -->
+        <div class="ai-chat-tutor" [class.open]="isAIChatOpen">
+            <div class="chat-header" (click)="isAIChatOpen = !isAIChatOpen">
+                <div class="chat-title">
+                    <i class="fas fa-robot"></i>
+                    <h4>Aviation Expert Co-Pilot</h4>
+                </div>
+                <i class="fas fa-chevron-up"></i>
+            </div>
+
+            <div class="chat-body">
+                <div class="chat-messages">
+                    <div *ngFor="let msg of aiChat" class="message" [class.user]="msg.isUser">
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <markdown *ngIf="!msg.isUser" [data]="msg.content"></markdown>
+                                <div *ngIf="msg.isUser">{{ msg.content }}</div>
+                            </div>
+                            <div class="message-time">
+                                {{ msg.timestamp | date:'HH:mm' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <input type="text" [(ngModel)]="aiQuery" placeholder="Ask about FAR regulations..."
+                        (keyup.enter)="handleAIChatQuery()">
+                    <button class="send-btn" (click)="handleAIChatQuery()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incorrect Answers -->
+        <div class="answers-review">
+            <h3 class="review-title">
+                <i class="fas fa-file-magnifying-glass"></i>
+                Debrief Analysis
+            </h3>
+
+            <div *ngFor="let result of userAnswers; let i = index" class="question-review">
+                <div *ngIf="!result.isCorrect" class="incorrect-card">
+                    <div class="question-header">
+                        <span class="question-number">Question {{ i + 1 }}</span>
+                        <span class="category-tag">{{ result.question.category }}</span>
+                    </div>
+                    <p class="question-text">{{ result.question.text }}</p>
+
+                    <div class="answer-comparison">
+                        <div class="user-answer">
+                            <i class="fas fa-user-astronaut"></i>
+                            Your Answer: {{ result.selectedAnswer !== null ?
+                            result.question.options[result.selectedAnswer].text : 'No selection' }}
+                        </div>
+                        <div class="correct-answer">
+                            <i class="fas fa-check-double"></i>
+                            Correct Answer: {{ result.question.options }}
+                        </div>
+                    </div>
+
+                    <div *ngIf="result.question.explanation" class="explanation">
+                        <markdown [data]="result.question.explanation"></markdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

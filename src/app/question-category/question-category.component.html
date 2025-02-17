@@ -1,0 +1,6 @@
+<div class="category-filter">
+    <div *ngFor="let category of categories" class="category-item" [class.active]="selectedCategory === category"
+        (click)="selectCategory(category)">
+        {{ category | titlecase }}
+    </div>
+</div>

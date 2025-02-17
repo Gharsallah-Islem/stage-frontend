@@ -1,0 +1,26 @@
+<div class="admin-container">
+  <aside class="sidebar">
+    <div class="sidebar-header mb-5">
+      <h2 class="text-xl fw-bold">Admin Portal</h2>
+      <p class="text-muted small mt-1">{{ currentDate }}</p>
+    </div>
+
+    <nav>
+      <ul>
+        <li routerLink="home" routerLinkActive="active">🏠 Dashboard</li>
+        <li routerLink="users" routerLinkActive="active">👥 All Users</li>
+        <li routerLink="modules" routerLinkActive="active">📚 All Modules</li>
+        <li routerLink="account-requests" routerLinkActive="active">📝 Account Requests</li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer mt-auto">
+      <div class="version-text text-center small opacity-75">
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

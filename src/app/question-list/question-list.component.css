@@ -1,0 +1,289 @@
+/* Enhanced Global Styles */
+:root {
+    --primary-gradient: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --neon-purple: #b721ff;
+    --neon-blue: #21d4fd;
+    --depth-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateX(0) rotateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px) rotateX(5deg) rotateY(5deg);
+    }
+}
+
+@keyframes gradient-pulse {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Enhanced Exam Simulator */
+.exam-simulator {
+    position: relative;
+    backdrop-filter: blur(25px);
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--depth-shadow),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+    transform-style: preserve-3d;
+    animation: float 6s ease-in-out infinite;
+    overflow: hidden;
+}
+
+.exam-simulator::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--primary-gradient);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.question-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.question-card:hover {
+    transform: translateZ(20px) rotateX(2deg) rotateY(2deg);
+}
+
+.option-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateZ(0);
+}
+
+.option-card:hover {
+    transform: translateZ(10px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3);
+}
+
+.option-card.selected {
+    background: linear-gradient(45deg, rgba(106, 17, 203, 0.2), rgba(37, 117, 252, 0.2));
+    border: 1px solid var(--neon-purple);
+    box-shadow: 0 0 25px rgba(106, 17, 203, 0.4);
+}
+
+/* Enhanced Question Bank */
+.question-bank {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--depth-shadow);
+    transform-style: preserve-3d;
+    overflow: hidden;
+}
+
+.ai-generator {
+    background: linear-gradient(45deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(106, 17, 203, 0.2);
+}
+
+/* Holographic Effect */
+@keyframes hologram {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.ai-badge {
+    background: linear-gradient(45deg,
+            rgba(183, 33, 255, 0.3),
+            rgba(33, 212, 253, 0.3));
+    animation: hologram 3s linear infinite;
+    background-size: 200% 200%;
+    position: relative;
+    overflow: hidden;
+}
+
+.ai-badge::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg,
+            transparent 25%,
+            rgba(255, 255, 255, 0.2) 50%,
+            transparent 75%);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* 3D Card Flip */
+.question-item {
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+
+.question-item:hover {
+    transform: rotateY(10deg) rotateX(5deg) translateZ(20px);
+}
+
+.question-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.1) 50%,
+            transparent 80%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.question-item:hover::before {
+    opacity: 1;
+}
+
+/* Neon Glow Effects */
+.difficulty-badge {
+    text-shadow: 0 0 10px currentColor;
+}
+
+.difficulty-badge.easy {
+    color: #00ff88;
+}
+
+.difficulty-badge.medium {
+    color: #ffd700;
+}
+
+.difficulty-badge.hard {
+    color: #ff3860;
+}
+
+/* Particle Connection Lines */
+.question-list {
+    position: relative;
+}
+
+.question-list::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%,
+            rgba(106, 17, 203, 0.1) 0%,
+            transparent 70%);
+    pointer-events: none;
+}
+
+/* Liquid Transition Effects */
+.category-item {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-gradient);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.category-item.active::after {
+    transform: scaleX(1);
+}
+
+/* Enhanced AI Explanation */
+.ai-explanation {
+    background: linear-gradient(45deg,
+            rgba(106, 17, 203, 0.05),
+            rgba(37, 117, 252, 0.05));
+    backdrop-filter: blur(10px);
+    border-left: 3px solid var(--neon-purple);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    animation: explanationEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes explanationEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) skewY(2deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) skewY(0);
+    }
+}
+
+/* Cyberpunk-style Loading */
+.ai-loading {
+    position: relative;
+    background: linear-gradient(45deg,
+            #6a11cb 25%,
+            #2575fc 50%,
+            #6a11cb 75%);
+    background-size: 200% 200%;
+    animation: gradient-pulse 2s linear infinite;
+}
+
+.ai-loading::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--glass-bg);
+}
+
+/* Hover Grid Effect */
+.options-grid {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+}
+
+.options-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, transparent calc(100% - 1px), var(--glass-border) calc(100% - 1px)),
+        linear-gradient(0deg, transparent calc(100% - 1px), var(--glass-border) calc(100% - 1px));
+    background-size: 50% 50%;
+    opacity: 0.3;
+    pointer-events: none;
+}

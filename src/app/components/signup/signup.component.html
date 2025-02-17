@@ -1,0 +1,36 @@
+<div class="netflix-login-container">
+  <div class="background-image">
+    <img src="https://wallpapercat.com/w/full/5/7/d/1274752-3840x2160-desktop-4k-aircraft-wallpaper.jpg"
+      alt="Avion Image">
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Form Container -->
+  <div class="form-container">
+    <h1>Sign Up</h1>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" required>
+        <label for="fullName">Full Name</label>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" [(ngModel)]="email" name="email" required>
+        <label for="email">Email</label>
+      </div>
+      <div class="form-group">
+        <input type="text" id="workCode" [(ngModel)]="workCode" name="workCode" required>
+        <label for="workCode">Work Code</label>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" [(ngModel)]="password" name="password" required>
+        <label for="password">Password</label>
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="signup-link">
+      <p>Already have an account? <a routerLink="/login">Login</a>.</p>
+    </div>
+  </div>
+</div>

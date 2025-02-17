@@ -1,0 +1,33 @@
+<div class="users-container">
+    <h2>👥 All Users</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Work ID</th>
+                <th>Avg Score</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users" @rowAnimation>
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.workCode }}</td>
+                <td [style.--score-width]="(user.avgTestScore / 100) * 100 + '%'">
+                    {{ user.avgTestScore | number:'1.0-2' }}%
+                </td>
+                <td [attr.data-role]="user.role">{{ user.role }}</td>
+                <td>
+                    <button (click)="toggleRole(user)"
+                        [ngClass]="{'admin-btn': user.role === 'ADMIN', 'user-btn': user.role === 'USER'}">
+                        Change Role
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,82 @@
+<div class="requests-container" @containerFade>
+  <h2 class="section-title">
+    <span class="icon">📋</span>
+    Account Requests
+    <span class="badge">{{accountRequests?.length || 0}}</span>
+  </h2>
+
+  <div class="table-wrapper">
+    <div class="shimmer-container" *ngIf="accountRequests === null">
+      <div class="shimmer" *ngFor="let item of [1,2,3]"></div>
+    </div>
+
+    <div class="grid-container" *ngIf="accountRequests && accountRequests.length > 0">
+      <div class="grid-header">
+        <div class="header-cell">Name</div>
+        <div class="header-cell">Email</div>
+        <div class="header-cell">Work ID</div>
+        <div class="header-cell">Join Date</div>
+        <div class="header-cell">Status</div>
+        <div class="header-cell">Actions</div>
+      </div>
+
+      <div class="grid-body" @rowAnimation>
+        <div class="grid-row" *ngFor="let request of accountRequests; trackBy: trackById"
+          [class.loading]="request.loading">
+          <div class="grid-cell">
+            <div class="user-info">
+              <span class="avatar">{{request.fullName }}</span>
+              <span class="name">{{request.fullName}}</span>
+            </div>
+          </div>
+          <div class="grid-cell">
+            <a [href]="'mailto:' + request.email" class="email-link">
+              {{request.email}}
+            </a>
+          </div>
+          <div class="grid-cell">
+            <div class="work-id">{{request.workCode || 'N/A'}}</div>
+          </div>
+          <div class="grid-cell">
+            <div class="date-badge">
+              {{request.joinDate ? (request.joinDate | date: 'd MMM y') : 'N/A'}}
+            </div>
+          </div>
+          <div class="grid-cell">
+            <div class="status-pill" [ngClass]="request.status.toLowerCase()">
+              <span class="status-dot"></span>
+              {{request.status}}
+            </div>
+          </div>
+          <div class="grid-cell">
+            <div class="action-buttons">
+              <button class="icon-button approve" *ngIf="request.status === 'PENDING'"
+                (click)="approveAccount(request.id)" [disabled]="request.loading">
+                <span class="material-icons-outlined">approve</span>
+                <span class="spinner" *ngIf="request.loading"></span>
+              </button>
+              <button class="icon-button revoke" *ngIf="request.status === 'APPROVED'"
+                (click)="revokeAccount(request.id)" [disabled]="request.loading">
+                <span class="material-icons-outlined">block</span>
+                <span class="spinner" *ngIf="request.loading"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="accountRequests && accountRequests.length === 0">
+      <div class="empty-illustration">
+        <svg class="waves" viewBox="0 0 1440 320">
+          <path fill="#6366f1" fill-opacity="0.1"
+            d="M0,224L48,213.3C96,203,192,181,288,154.7C384,128,480,96,576,117.3C672,139,768,213,864,218.7C960,224,1056,160,1152,128C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+          </path>
+        </svg>
+        <div class="document-icon">📄</div>
+      </div>
+      <h3 class="empty-title">No Pending Requests</h3>
+      <p class="empty-text">New account requests will appear here automatically</p>
+    </div>
+  </div>
+</div>

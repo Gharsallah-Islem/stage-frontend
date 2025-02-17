@@ -1,0 +1,23 @@
+<div class="question-list">
+    <div *ngFor="let question of questions" class="question-item glass-card">
+        <div class="question-header">
+            <span class="category-badge">{{ question.category }}</span>
+            <span class="difficulty-badge {{ question.difficulty }}">
+                {{ question.difficulty | titlecase }}
+            </span>
+            <span *ngIf="question.aiGenerated" class="ai-badge">
+                <i class="fas fa-robot"></i> AI Generated
+            </span>
+        </div>
+        <p class="question-text">{{ question.text }}</p>
+        <div class="options">
+            <div *ngFor="let option of question.options" class="option">
+                <span class="correct-indicator" *ngIf="option.correct">✓</span>
+                {{ option.text }}
+            </div>
+        </div>
+        <div *ngIf="question.explanation" class="explanation">
+            {{ question.explanation }}
+        </div>
+    </div>
+</div>

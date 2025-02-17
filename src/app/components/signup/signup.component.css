@@ -1,0 +1,180 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+
+/* Netflix-Like Container */
+.netflix-login-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    color: azure;
+}
+
+/* Background Image */
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.background-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Overlay */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Dark overlay */
+    z-index: 0;
+}
+
+/* Form Container */
+.form-container {
+    position: relative;
+    z-index: 1;
+    max-width: 450px;
+    width: 100%;
+    padding: 60px;
+    background: rgba(0, 0, 0, 0.75);
+    /* Slightly transparent background */
+    border-radius: 8px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.form-container h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    background: #333;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+}
+
+.form-group input:focus {
+    background: #444;
+}
+
+.form-group label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #8c8c8c;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus+label,
+.form-group input:not(:placeholder-shown)+label {
+    top: 10px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 10px;
+    background: #e50914;
+    /* Netflix red */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #f40612;
+    /* Brighter red on hover */
+}
+
+/* Form Options */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.form-options label {
+    display: flex;
+    align-items: center;
+    color: #b3b3b3;
+}
+
+.form-options input {
+    margin-right: 5px;
+}
+
+.form-options a {
+    color: #b3b3b3;
+    text-decoration: none;
+}
+
+.form-options a:hover {
+    text-decoration: underline;
+}
+
+/* Sign Up Link */
+.signup-link {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #b3b3b3;
+}
+
+.signup-link a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
