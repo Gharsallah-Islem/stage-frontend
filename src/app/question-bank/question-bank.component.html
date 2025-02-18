@@ -41,87 +41,128 @@
             </button>
         </div>
     </nav>
-
+    <br><br>
     <div class="question-bank-wrapper">
-        <br><br><br><br>
         <div class="bank-header">
             <div class="header-content">
-                <h2 class="bank-title">
-                    <i class="fas fa-database pulse"></i>
-                    <span class="gradient-text">Knowledge Vault</span>
-                </h2>
+                <div class="holographic-title">
+                    <h2 class="bank-title">
+                        <i class="fas fa-database"></i>
+                        <span>Knowledge Nexus</span>
+                    </h2>
+                    <div class="hologram-effect"></div>
+                </div>
                 <div class="stats-grid">
-                    <div class="stat-card neon">
-                        <i class="fas fa-box-open"></i>
-                        <div>
+                    <div class="stat-card holographic">
+                        <div class="stat-icon">
+                            <i class="fas fa-box-open"></i>
+                            <div class="particle-glow"></div>
+                        </div>
+                        <div class="stat-info">
                             <h3>Total Questions</h3>
-                            <p>{{questions.length}}</p>
+                            <p class="stat-value">{{questions.length}}</p>
+                            <div class="progress-arc" [style.--progress]="questions.length/1000"></div>
                         </div>
                     </div>
-                    <div class="stat-card neon">
-                        <i class="fas fa-brain"></i>
-                        <div>
+                    <div class="stat-card holographic">
+                        <div class="stat-icon">
+                            <i class="fas fa-brain"></i>
+                            <div class="particle-glow"></div>
+                        </div>
+                        <div class="stat-info">
                             <h3>AI Generated</h3>
-                            <p>+{{aiGeneratedCount}}</p>
+                            <p class="stat-value">+{{aiGeneratedCount}}</p>
+                            <div class="progress-wave"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="controls-panel">
-                <div class="search-box glow-on-hover">
+                <div class="search-box cosmic-input">
                     <input type="text" placeholder="Search aviation knowledge..." [(ngModel)]="searchQuery"
                         (input)="filterQuestions()">
                     <i class="fas fa-search"></i>
+                    <div class="input-glow"></div>
                 </div>
-                <button class="ai-generator-btn" (click)="showAIGenerator = true">
+                <button class="ai-generator-btn holographic" (click)="showAIGenerator = true">
                     <i class="fas fa-robot"></i>
                     <span>Generate</span>
-                    <div class="hover-effect"></div>
+                    <div class="hologram-effect"></div>
                 </button>
             </div>
         </div>
 
         <div class="content-grid">
-            <div class="filter-panel">
+            <!-- Filter Panel -->
+            <div class="filter-panel cosmic-card">
+                <div class="panel-section">
+                    <h3><i class="fas fa-filter"></i> Smart Filters</h3>
+                    <div class="ai-recommendation">
+                        <p>AI Suggestions: {{aiSuggestedFilters.join(', ')}}</p>
+                    </div>
+                </div>
+
                 <app-question-category [categories]="categories"
                     (categoryChange)="selectedCategory = $event; filterQuestions()">
                 </app-question-category>
 
                 <div class="difficulty-filter">
-                    <h4>Difficulty Spectrum</h4>
+                    <h4><i class="fas fa-chart-line"></i> Difficulty Matrix</h4>
                     <div class="difficulty-levels">
                         <button *ngFor="let diff of difficulties" [class.active]="selectedDifficulty === diff"
                             (click)="toggleDifficulty(diff)">
-                            <span class="difficulty-dot {{diff}}"></span>
-                            {{diff | titlecase}}
+                            <span class="difficulty-glow {{diff}}"></span>
+                            <span class="difficulty-label">{{diff | titlecase}}</span>
+                            <span class="ai-percent">{{getDifficultyPercentage(diff)}}%</span>
                         </button>
                     </div>
                 </div>
             </div>
 
+            <!-- Main Question Panel -->
             <div class="question-panel">
-                <app-question-list [questions]="filteredQuestions" (questionSelected)="showQuestionDetail($event)">
+                <div class="question-actions">
+                    <button class="ai-analysis-btn" (click)="analyzeQuestionBank()">
+                        <i class="fas fa-microscope"></i> AI Analysis
+                    </button>
+                    <div class="view-toggle">
+                        <button [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <app-question-list [questions]="filteredQuestions" [viewMode]="viewMode"
+                    (questionSelected)="showQuestionDetail($event)">
                 </app-question-list>
             </div>
 
-            <div class="detail-panel" [class.active]="selectedQuestion">
+            <!-- Detail Panel -->
+            <div class="detail-panel cosmic-card" [class.active]="selectedQuestion">
                 <div class="detail-content" *ngIf="selectedQuestion">
                     <button class="close-detail" (click)="selectedQuestion = null">
                         <i class="fas fa-times"></i>
                     </button>
-                    <h3 class="question-title">{{selectedQuestion.text}}</h3>
-                    <div class="question-meta">
-                        <span class="category-tag {{selectedQuestion.category.toLowerCase()}}">
-                            {{selectedQuestion.category}}
-                        </span>
-                        <span class="difficulty-badge {{selectedQuestion.difficulty}}">
-                            {{selectedQuestion.difficulty}}
-                        </span>
+                    <div class="question-header">
+                        <h3 class="question-title">{{selectedQuestion.text}}</h3>
+                        <div class="question-meta">
+                            <span class="category-tag {{selectedQuestion.category.toLowerCase()}}">
+                                {{selectedQuestion.category}}
+                            </span>
+                            <span class="difficulty-badge {{selectedQuestion.difficulty}}">
+                                {{selectedQuestion.difficulty}}
+                            </span>
+                        </div>
                     </div>
+
                     <div class="question-options">
                         <div *ngFor="let opt of selectedQuestion.options; let i = index" class="option-card"
                             [class.correct]="opt.correct">
+                            <div class="option-hologram"></div>
                             <div class="option-index">{{i + 1}}</div>
                             <div class="option-text">{{opt.text}}</div>
                             <div class="correct-indicator">
@@ -129,42 +170,71 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="ai-analysis" *ngIf="selectedQuestion.aiGenerated">
+                        <h4><i class="fas fa-brain"></i> AI Insights</h4>
+                        <p>{{getQuestionAnalysis(selectedQuestion)}}</p>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- AI Generator Modal -->
         <div class="ai-generator-modal" [class.active]="showAIGenerator">
-            <div class="modal-content">
+            <div class="modal-content cosmic-card">
                 <div class="modal-header">
-                    <h3><i class="fas fa-magic"></i> AI Question Forge</h3>
+                    <h3><i class="fas fa-stars"></i> Quantum Question Generator</h3>
                     <button class="close-modal" (click)="showAIGenerator = false">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="ai-configurator">
                     <div class="input-group">
-                        <label>Topic</label>&nbsp;
-                        <input type="text" [(ngModel)]="aiTopic"
-                            placeholder="Enter aviation topic (e.g. 'RVSM procedures')">
+                        <label><i class="fas fa-atom"></i> Topic Focus</label>
+                        <div class="cosmic-input">
+                            <input type="text" [(ngModel)]="aiTopic"
+                                placeholder="Enter aviation topic (e.g. 'RVSM procedures')">
+                            <div class="input-glow"></div>
+                        </div>
                     </div>
 
                     <div class="input-group">
-                        <label>Difficulty : </label>
+                        <label><i class="fas fa-chart-network"></i> Complexity Matrix</label>
                         <div class="difficulty-selector">
                             <button *ngFor="let diff of difficulties" [class.active]="aiDifficulty === diff"
                                 (click)="aiDifficulty = diff">
-                                <span class="difficulty-glow {{diff}}"> |</span>
+                                <span class="difficulty-glow {{diff}}"></span>
                                 {{diff | titlecase}}
+                                <span class="ai-complexity">{{getComplexityScore(diff)}}</span>
                             </button>
                         </div>
                     </div>
 
-                    <button class="generate-btn" (click)="generateAIQuestion()" [disabled]="aiLoading || !aiTopic">
-                        <div class="btn-content">
-                            <i class="fas fa-robot" [class.spin]="aiLoading"></i>
-                            {{aiLoading ? 'Crafting Question...' : 'Forge Question'}}
+                    <div class="advanced-options">
+                        <h4><i class="fas fa-cogs"></i> Generator Settings</h4>
+                        <div class="option-grid">
+                            <div class="option-item">
+                                <label>Question Type:</label>
+                                <select [(ngModel)]="aiQuestionType">
+                                    <option value="multiple">Multiple Choice</option>
+                                    <option value="truefalse">True/False</option>
+                                    <option value="scenario">Scenario Based</option>
+                                </select>
+                            </div>
+                            <div class="option-item">
+                                <label>Generate Count:</label>
+                                <input type="number" [(ngModel)]="aiGenerateCount" min="1" max="10">
+                            </div>
                         </div>
-                        <div class="btn-glow"></div>
+                    </div>
+
+                    <button class="generate-btn holographic" (click)="generateAIQuestion()"
+                        [disabled]="aiLoading || !aiTopic">
+                        <div class="btn-content">
+                            <i class="fas fa-atom" [class.spin]="aiLoading"></i>
+                            {{aiLoading ? 'Quantum Generating...' : 'Synthesize Questions'}}
+                        </div>
+                        <div class="hologram-effect"></div>
                     </button>
                 </div>
             </div>

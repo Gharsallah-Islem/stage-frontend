@@ -76,6 +76,7 @@
     </div>
 
     <!-- Exam Interface -->
+     <br><br><br><br>
     <div *ngIf="examStarted && !examFinished" [@questionNavigation]="navigationState.direction">
         <div class="exam-header">
             <div class="timer holographic-display">
@@ -106,7 +107,7 @@
                 </span>
             </div>
 
-            <h2 class="question-text gradient-text">
+            <h2>
                 {{ currentQuestion.text }}
             </h2>
 

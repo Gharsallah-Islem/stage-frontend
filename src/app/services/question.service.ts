@@ -21,7 +21,7 @@ export class QuestionService {
 
   constructor(private http: HttpClient) { }
 
-  async generateAIQuestion(topic: string, difficulty: string): Promise<Question> {
+  async generateAIQuestion(topic: string, difficulty: string, aiQuestionType: string): Promise<Question> {
     const prompt = `Generate a multiple choice question about ${topic} for aviation exams at ${difficulty} difficulty level. 
       Format as JSON: {
         "text": "question text",

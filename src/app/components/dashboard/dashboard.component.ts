@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
       },
     ],
-  }); 
+  });
   id: string = 'particles';
   @ViewChild('performanceChart') performanceChartRef!: ElementRef;
   @ViewChild('trendChart') trendChartRef!: ElementRef;
@@ -599,13 +599,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Utility Methods
   getLast12Months(): string[] {
-    const months = [];
-    const date = new Date();
-    for (let i = 0; i < 12; i++) {
-      date.setMonth(date.getMonth() - 1);
-      months.push(date.toLocaleString('default', { month: 'short' }));
-    }
-    return months.reverse();
+    const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+    years.reverse();
+    return years.reverse();
   }
 
   generateTrendData(): number[] {
