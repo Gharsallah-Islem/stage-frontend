@@ -17,6 +17,7 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           localStorage.setItem('userId', response.userId);
           localStorage.setItem('role', response.role);
+          localStorage.setItem('status', response.status);
         }
       })
     );
@@ -26,7 +27,7 @@ export class AuthService {
   register(user: any): Observable<any> {
     return this.http.post(`${this.link}/register`, user, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      responseType: 'text' 
+      responseType: 'text'
     });
   }
 
@@ -42,5 +43,13 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('user');
+  }
+  getRole(): string | null {
+    return localStorage.getItem('role');
+  }
+  getStatus(): string | null {
+    const status = localStorage.getItem('status');
+    console.log('Retrieved status from storage:', status);
+    return status;
   }
 }

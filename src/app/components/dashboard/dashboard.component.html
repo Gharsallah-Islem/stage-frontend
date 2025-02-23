@@ -1,475 +1,496 @@
-<nav class="smart-navbar" [class.scrolled]="isScrolled">
-  <div class="nav-container">
-    <a routerLink="/dashboard" class="brand-logo">
-      <span class="brand-text">OACA Hub</span>
-    </a>
-
-    <div class="nav-links" [class.active]="isMobileMenuOpen">
-      <div class="nav-link-wrapper">
-        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
-          <i class="fas fa-home link-icon"></i>
-          <span>Dashboard</span>
-          <div class="link-underline"></div>
-        </a>
-
-        <a routerLink="/exam" routerLinkActive="active" class="nav-link">
-          <i class="fas fa-puzzle-piece link-icon"></i>
-          <span>Exam Simulator</span>
-          <div class="link-underline"></div>
-        </a>
-
-        <a routerLink="/question-bank" routerLinkActive="active" class="nav-link">
-          <i class="fas fa-database link-icon"></i>
-          <span>Question Bank</span>
-          <div class="link-underline"></div>
-        </a>
-      </div>
-
-      <div class="nav-actions">
-        <button class="user-menu">
-          <i class="fas fa-chevron-down"></i>
-        </button>
-      </div>
-    </div>
-
-    <button class="hamburger" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
-      <span class="hamburger-box">
-        <span class="hamburger-inner"></span>
-      </span>
-    </button>
+<div *ngIf="!userStatus" class="loading-screen">
+  <div class="loader"></div>
+  <p>Loading dashboard...</p>
+</div>
+<div *ngIf="userStatus === 'PENDING'" class="pending-approval-message">
+  <div class="message-container">
+    <i class="fas fa-hourglass-half fa-3x"></i>
+    <h2>Account Pending Approval</h2>
+    <p>Your account is currently under review. Please wait for administrator approval to access the learning platform.
+    </p>
   </div>
-</nav>
-<div class="dashboard-wrapper">
-  <ng-particles [id]="id" [options]="particlesOptions" (particlesLoaded)="particlesLoaded($event)"></ng-particles>
+</div>
+<div *ngIf="userStatus === 'APPROVED'">
 
-  <div class="container-fluid px-4 py-5">
-    <header class="dashboard-header mb-5">
-      <h1 class="hero-title">
-        <span class="gradient-text floating">OACA Knowledge Hub</span>
-        <div class="hero-subtitle">Aviation Mastery Platform</div>
-      </h1>
-      <div class="dashboard-stats">
-        <div class="stat-card">
-          <i class="fas fa-brain"></i>
-          <div>
-            <h3>Mastery Level</h3>
-            <p>{{ averageScore | number: '1.1-1' }}%</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-trophy"></i>
-          <div>
-            <h3>Achievements</h3>
-            <p>{{ unlockedAchievements }}/{{ totalAchievements }}</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-clock"></i>
-          <div>
-            <h3>Study Hours</h3>
-            <p>{{ totalStudyHours | number: '1.0-0' }}</p>
-          </div>
-        </div>
-      </div>
-    </header>
-    <div class="ai-chat-sidebar" [class.active]="showAIPanel">
-      <div class="ai-chat-header">
-        <div class="ai-chat-title">
-          <i class="fas fa-robot"></i>
-          <h3>Aviation Exam Assistant</h3>
-        </div>
-        <button class="action-btn" (click)="toggleAIPanel()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+  <nav class="smart-navbar" [class.scrolled]="isScrolled">
+    <div class="nav-container">
+      <a routerLink="/dashboard" class="brand-logo">
+        <span class="brand-text">OACA Hub</span>
+      </a>
 
-      <div class="ai-chat-messages">
-        <div *ngFor="let message of chatMessages" class="ai-message" [class.user-message]="message.isUser"
-          [class.ai-message-bubble]="!message.isUser">
-          <markdown *ngIf="!message.isUser" [data]="message.content" class="markdown-response" [emoji]="true">
-          </markdown>
-          <div *ngIf="message.isUser">{{ message.content }}</div>
+      <div class="nav-links" [class.active]="isMobileMenuOpen">
+        <div class="nav-link-wrapper">
+          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+            class="nav-link">
+            <i class="fas fa-home link-icon"></i>
+            <span>Dashboard</span>
+            <div class="link-underline"></div>
+          </a>
+
+          <a routerLink="/exam" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-puzzle-piece link-icon"></i>
+            <span>Exam Simulator</span>
+            <div class="link-underline"></div>
+          </a>
+
+          <a routerLink="/question-bank" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-database link-icon"></i>
+            <span>Question Bank</span>
+            <div class="link-underline"></div>
+          </a>
+          <a routerLink="/login" routerLinkActive="active" class="nav-link">
+            <i class="fas fa-sign-out link-icon"></i>
+            <span>sign-out </span>
+            <div class="link-underline"></div>
+          </a>
         </div>
 
-        <div *ngIf="AILoading" class="ai-typing-indicator">
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-        </div>
-      </div>
-
-      <div class="ai-chat-input">
-        <div class="gemini-disclaimer">
-          Powered by Google Gemini AI • Aviation exam specialist
-        </div>
-        <div class="chat-input-container">
-          <input type="text" class="chat-input" placeholder="Ask about FAR regulations..." [(ngModel)]="AIQuestion"
-            (keyup.enter)="handleAIQuestion()">
-          <button class="send-button" (click)="handleAIQuestion()">
-            <i class="fas fa-paper-plane"></i>
+        <div class="nav-actions">
+          <button class="user-menu">
+            <i class="fas fa-chevron-down"></i>
           </button>
         </div>
       </div>
+
+      <button class="hamburger" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
     </div>
+  </nav>
+  <div class="dashboard-wrapper">
+    <ng-particles [id]="id" [options]="particlesOptions" (particlesLoaded)="particlesLoaded($event)"></ng-particles>
 
-    <div class="main-content">
-      <div class="left-panel">
-        <div class="progress-table glass-card mb-4">
-          <div class="table-header">
-            <h3><i class="fas fa-layer-group me-2"></i>Chapter Progress</h3>
-            <div class="search-box">
-              <input type="text" placeholder="Search chapters..." [(ngModel)]="searchQuery" (input)="filterChapters()">
-              <i class="fas fa-search"></i>
+    <div class="container-fluid px-4 py-5">
+      <header class="dashboard-header mb-5">
+        <h1 class="hero-title">
+          <span class="gradient-text floating">OACA Knowledge Hub</span>
+          <div class="hero-subtitle">Aviation Mastery Platform</div>
+        </h1>
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <i class="fas fa-brain"></i>
+            <div>
+              <h3>Mastery Level</h3>
+              <p>{{ averageScore | number: '1.1-1' }}%</p>
             </div>
           </div>
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Chapter</th>
-                  <th>Progress</th>
-                  <th>Grade</th>
-                  <th>Last Updated</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let chapter of filteredChapters" [class.weak-chapter]="chapter.marks <= 50" @rowAnimation>
-                  <td class="chapter-title">
-                    <i class="fas fa-book-open me-2"></i>
-                    {{ chapter.name }}
-                  </td>
-                  <td>
-                    <div class="progress-container">
-                      <div class="progress-bar" [style.width.%]="chapter.marks">
-                        <span>{{ chapter.marks }}%</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="star-rating">
-                      <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= chapter.rating"
-                        (click)="updateRating(chapter.id, star)"></i>
-                    </div>
-                  </td>
-                  <td>{{ chapter.lastUpdated | date: 'mediumDate' }}</td>
-                  <td>
-                    <button class="action-btn" (click)="openChapterDetails(chapter)">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="action-btn download-btn" (click)="openChapterDetails(chapter)">
-                      <i class="fas fa-download"></i>
-                      <span class="download-text">Download</span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="stat-card">
+            <i class="fas fa-trophy"></i>
+            <div>
+              <h3>Achievements</h3>
+              <p>{{ unlockedAchievements }}/{{ totalAchievements }}</p>
+            </div>
           </div>
-        </div>
-
-        <div class="weak-chapters-card glass-card mb-4" *ngIf="weakChapters.length > 0">
-          <div class="warning-header">
-            <i class="fas fa-exclamation-triangle"></i>
-            <h4>Chapters Requiring Immediate Attention</h4>
-          </div>
-          <div class="weak-chapters-list">
-            <div *ngFor="let chapter of weakChapters" class="weak-chapter-item">
-              <div class="chapter-info">
-                <div class="chapter-name">{{ chapter.name }}</div>
-                <div class="chapter-score">{{ chapter.marks }}%</div>
-              </div>
-              <div class="progress-bar">
-                <div [style.width.%]="chapter.marks" class="progress-fill"></div>
-              </div>
+          <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <div>
+              <h3>Study Hours</h3>
+              <p>{{ totalStudyHours | number: '1.0-0' }}</p>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="right-panel">
-        <div class="analytics-grid">
-          <div class="glass-card mastery-chart">
-            <h3><i class="fas fa-chart-line me-2"></i>Subject Mastery</h3>
-            <canvas #masteryChart id="masteryChart"></canvas>
+      </header>
+      <div class="ai-chat-sidebar" [class.active]="showAIPanel">
+        <div class="ai-chat-header">
+          <div class="ai-chat-title">
+            <i class="fas fa-robot"></i>
+            <h3>Aviation Exam Assistant</h3>
           </div>
-          <div class="glass-card mastery-chart">
-            <h3><i class="fas fa-chart-line me-2"></i></h3>
-            <canvas #performanceChart id="performanceChart"></canvas>
-          </div>
-          <div class="glass-card mastery-chart">
-            <h3><i class="fas fa-chart-line me-2"></i></h3>
-            <canvas #trendChart id="trendChart"></canvas>
-          </div>
-
-          <div class="glass-card resource-card">
-            <h3><i class="fas fa-graduation-cap me-2"></i>Recommended Resources</h3>
-            <div class="resources-list">
-              <div *ngFor="let resource of recommendedResources" class="resource-item">
-                <div class="resource-thumbnail">
-                  <i class="fas fa-file-alt"></i>
-                </div>
-                <div class="resource-info">
-                  <h4>{{ resource.title }}</h4>
-                  <p>{{ resource.type }} · {{ resource.duration }} mins</p>
-                  <div class="resource-progress">
-                    <div class="progress-fill" [style.width.%]="resource.progress"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="glass-card calendar-card">
-            <h3><i class="fas fa-calendar-alt me-2"></i>Study Planner</h3>
-            <div class="calendar-grid">
-              <div *ngFor="let day of calendarDays" class="calendar-day" [class.active]="day.active"
-                (click)="toggleDay(day)">
-                {{ day.date }}
-              </div>
-            </div>
-          </div>
-
-          <div class="glass-card achievement-card">
-            <h3><i class="fas fa-medal me-2"></i>Recent Achievements</h3>
-            <div class="achievements-grid">
-              <div *ngFor="let achievement of recentAchievements" class="achievement-item"
-                [class.unlocked]="achievement.unlocked">
-                <div class="achievement-badge">
-                  <i class="fas fa-trophy"></i>
-                </div>
-                <p>{{ achievement.title }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ai-assistant-fab" (click)="toggleAIPanel()">
-      <i class="fas fa-robot"></i>
-    </div>
-
-    <div class="ai-panel glass-card" [class.active]="showAIPanel">
-      <div class="ai-header">
-        <h3><i class="fas fa-brain"></i> Study Assistant</h3>
-        <button class="close-btn" (click)="toggleAIPanel()">&times;</button>
-      </div>
-      <div class="ai-content">
-        <div class="ai-question">
-          <input type="text" placeholder="Ask me anything about your studies..." [(ngModel)]="AIQuestion"
-            (keyup.enter)="handleAIQuestion()">
-          <i class="fas fa-paper-plane"></i>
-        </div>
-        <div class="ai-response">
-          <div class="thinking-loader" *ngIf="AILoading">
-            <div class="dot-flashing"></div>
-          </div>
-          <markdown [data]="AIResponse" *ngIf="!AILoading"></markdown>
-        </div>
-      </div>
-    </div>
-
-    <!-- Study Timeline Section -->
-    <div class="glass-card study-timeline">
-      <div class="timeline-header">
-        <h3><i class="fas fa-hourglass-half"></i> Study Timeline</h3>
-        <div class="time-stats">
-          <div class="stat">
-            <span>Daily Goal</span>
-            <strong>120/150 mins</strong>
-          </div>
-          <div class="stat">
-            <span>Weekly Total</span>
-            <strong>8.5 hours</strong>
-          </div>
-        </div>
-      </div>
-      <div class="timeline-container">
-        <div class="timeline-item" *ngFor="let session of studySessions">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <h4>{{ session.subject }}</h4>
-            <div class="timeline-meta">
-              <span class="duration">{{ session.duration }} mins</span>
-              <span class="date">{{ session.date | date: 'MMM d' }}</span>
-              <div class="progress">
-                <div class="progress-bar" [style.width.%]="session.progress"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="study-timer">
-        <div class="timer-display">{{ timerDisplay }}</div>
-        <div class="timer-controls">
-          <button class="btn-pomodoro" (click)="startPomodoro()">
-            <i class="fas fa-play"></i> Start Focus Session
-          </button>
-          <button class="btn-stop" (click)="stopTimer()">
-            <i class="fas fa-stop"></i>
+          <button class="action-btn" (click)="toggleAIPanel()">
+            <i class="fas fa-times"></i>
           </button>
         </div>
-      </div>
-    </div>
 
-    <!-- Collaborative Learning Section -->
-    <div class="glass-card study-groups">
-      <div class="groups-header">
-        <h3><i class="fas fa-users"></i> Study Groups</h3>
-        <button class="btn-new-group">
-          <i class="fas fa-plus"></i> New Group
-        </button>
-      </div>
-      <div class="group-list">
-        <div class="group-card" *ngFor="let group of activeGroups">
-          <div class="group-info">
-            <div class="group-subject">{{ group.subject }}</div>
-            <div class="group-meta">
-              <span class="members">{{ group.members.length }} members</span>
-              <span class="active-now">{{ group.active }} online</span>
-            </div>
+        <div class="ai-chat-messages">
+          <div *ngFor="let message of chatMessages" class="ai-message" [class.user-message]="message.isUser"
+            [class.ai-message-bubble]="!message.isUser">
+            <markdown *ngIf="!message.isUser" [data]="message.content" class="markdown-response" [emoji]="true">
+            </markdown>
+            <div *ngIf="message.isUser">{{ message.content }}</div>
           </div>
-          <div class="group-members">
-            <div class="member-avatar" *ngFor="let member of group.members">
-              <img [src]="member.avatar" alt="Member">
-              <div class="online-status" [class.online]="member.online"></div>
-            </div>
-          </div>
-          <button class="join-btn">
-            <i class="fas fa-door-open"></i> Join
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <!-- Knowledge Vault Section -->
-    <div class="glass-card resource-bank">
-      <h3><i class="fas fa-vault"></i> Knowledge Vault</h3>
-      <div class="resource-filters">
-        <div class="filter" *ngFor="let filter of resourceFilters" [class.active]="activeFilter === filter.id"
-          (click)="activeFilter = filter.id">
-          {{ filter.name }} ({{ filter.count }})
+          <div *ngIf="AILoading" class="ai-typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
         </div>
-      </div>
-      <div class="resource-grid">
-        <div class="resource-card" *ngFor="let resource of filteredResources">
-          <div class="resource-icon">
-            <i [class]="resource.icon"></i>
+
+        <div class="ai-chat-input">
+          <div class="gemini-disclaimer">
+            Powered by Google Gemini AI • Aviation exam specialist
           </div>
-          <div class="resource-info">
-            <h4>{{ resource.title }}</h4>
-            <div class="resource-meta">
-              <span class="type">{{ resource.type }}</span>
-              <span class="date">{{ resource.date | date: 'shortDate' }}</span>
-            </div>
-            <div class="progress">
-              <div class="progress-bar" [style.width.%]="resource.progress"></div>
-            </div>
-          </div>
-          <div class="resource-actions">
-            <button class="btn-action">
-              <i class="fas fa-external-link-alt"></i>
+          <div class="chat-input-container">
+            <input type="text" class="chat-input" placeholder="Ask about FAR regulations..." [(ngModel)]="AIQuestion"
+              (keyup.enter)="handleAIQuestion()">
+            <button class="send-button" (click)="handleAIQuestion()">
+              <i class="fas fa-paper-plane"></i>
             </button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Exam Simulator Section -->
-    <div class="glass-card exam-simulator">
-      <div class="simulator-header">
-        <h3><i class="fas fa-vial"></i> Exam Simulator</h3>
-        <div class="performance-preview">
-          <div class="score">
-            Last Score: <strong>82%</strong>
+      <div class="main-content">
+        <div class="left-panel">
+          <div class="progress-table glass-card mb-4">
+            <div class="table-header">
+              <h3><i class="fas fa-layer-group me-2"></i>Chapter Progress</h3>
+              <div class="search-box">
+                <input type="text" placeholder="Search chapters..." [(ngModel)]="searchQuery"
+                  (input)="filterChapters()">
+                <i class="fas fa-search"></i>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Chapter</th>
+                    <th>Progress</th>
+                    <th>Grade</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let chapter of filteredChapters" [class.weak-chapter]="chapter.marks <= 50" @rowAnimation>
+                    <td class="chapter-title">
+                      <i class="fas fa-book-open me-2"></i>
+                      {{ chapter.name }}
+                    </td>
+                    <td>
+                      <div class="progress-container">
+                        <div class="progress-bar" [style.width.%]="chapter.marks">
+                          <span>{{ chapter.marks }}%</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="star-rating">
+                        <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= chapter.rating"
+                          (click)="updateRating(chapter.id, star)"></i>
+                      </div>
+                    </td>
+                    <td>{{ chapter.lastUpdated | date: 'mediumDate' }}</td>
+                    <td>
+                      <button class="action-btn" (click)="openChapterDetails(chapter)">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="action-btn download-btn" (click)="openChapterDetails(chapter)">
+                        <i class="fas fa-download"></i>
+                        <span class="download-text">Download</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="improvement">
-            <i class="fas fa-chart-line"></i> +12% vs last week
+
+          <div class="weak-chapters-card glass-card mb-4" *ngIf="weakChapters.length > 0">
+            <div class="warning-header">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h4>Chapters Requiring Immediate Attention</h4>
+            </div>
+            <div class="weak-chapters-list">
+              <div *ngFor="let chapter of weakChapters" class="weak-chapter-item">
+                <div class="chapter-info">
+                  <div class="chapter-name">{{ chapter.name }}</div>
+                  <div class="chapter-score">{{ chapter.marks }}%</div>
+                </div>
+                <div class="progress-bar">
+                  <div [style.width.%]="chapter.marks" class="progress-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div class="analytics-grid">
+            <div class="glass-card mastery-chart">
+              <h3><i class="fas fa-chart-line me-2"></i>Subject Mastery</h3>
+              <canvas #masteryChart id="masteryChart"></canvas>
+            </div>
+            <div class="glass-card mastery-chart">
+              <h3><i class="fas fa-chart-line me-2"></i></h3>
+              <canvas #performanceChart id="performanceChart"></canvas>
+            </div>
+            <div class="glass-card mastery-chart">
+              <h3><i class="fas fa-chart-line me-2"></i></h3>
+              <canvas #trendChart id="trendChart"></canvas>
+            </div>
+
+            <div class="glass-card resource-card">
+              <h3><i class="fas fa-graduation-cap me-2"></i>Recommended Resources</h3>
+              <div class="resources-list">
+                <div *ngFor="let resource of recommendedResources" class="resource-item">
+                  <div class="resource-thumbnail">
+                    <i class="fas fa-file-alt"></i>
+                  </div>
+                  <div class="resource-info">
+                    <h4>{{ resource.title }}</h4>
+                    <p>{{ resource.type }} · {{ resource.duration }} mins</p>
+                    <div class="resource-progress">
+                      <div class="progress-fill" [style.width.%]="resource.progress"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card calendar-card">
+              <h3><i class="fas fa-calendar-alt me-2"></i>Study Planner</h3>
+              <div class="calendar-grid">
+                <div *ngFor="let day of calendarDays" class="calendar-day" [class.active]="day.active"
+                  (click)="toggleDay(day)">
+                  {{ day.date }}
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card achievement-card">
+              <h3><i class="fas fa-medal me-2"></i>Recent Achievements</h3>
+              <div class="achievements-grid">
+                <div *ngFor="let achievement of recentAchievements" class="achievement-item"
+                  [class.unlocked]="achievement.unlocked">
+                  <div class="achievement-badge">
+                    <i class="fas fa-trophy"></i>
+                  </div>
+                  <p>{{ achievement.title }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ai-assistant-fab" (click)="toggleAIPanel()">
+        <i class="fas fa-robot"></i>
+      </div>
+
+      <div class="ai-panel glass-card" [class.active]="showAIPanel">
+        <div class="ai-header">
+          <h3><i class="fas fa-brain"></i> Study Assistant</h3>
+          <button class="close-btn" (click)="toggleAIPanel()">&times;</button>
+        </div>
+        <div class="ai-content">
+          <div class="ai-question">
+            <input type="text" placeholder="Ask me anything about your studies..." [(ngModel)]="AIQuestion"
+              (keyup.enter)="handleAIQuestion()">
+            <i class="fas fa-paper-plane"></i>
+          </div>
+          <div class="ai-response">
+            <div class="thinking-loader" *ngIf="AILoading">
+              <div class="dot-flashing"></div>
+            </div>
+            <markdown [data]="AIResponse" *ngIf="!AILoading"></markdown>
           </div>
         </div>
       </div>
 
+      <!-- Study Timeline Section -->
+      <div class="glass-card study-timeline">
+        <div class="timeline-header">
+          <h3><i class="fas fa-hourglass-half"></i> Study Timeline</h3>
+          <div class="time-stats">
+            <div class="stat">
+              <span>Daily Goal</span>
+              <strong>120/150 mins</strong>
+            </div>
+            <div class="stat">
+              <span>Weekly Total</span>
+              <strong>8.5 hours</strong>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-container">
+          <div class="timeline-item" *ngFor="let session of studySessions">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h4>{{ session.subject }}</h4>
+              <div class="timeline-meta">
+                <span class="duration">{{ session.duration }} mins</span>
+                <span class="date">{{ session.date | date: 'MMM d' }}</span>
+                <div class="progress">
+                  <div class="progress-bar" [style.width.%]="session.progress"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="study-timer">
+          <div class="timer-display">{{ timerDisplay }}</div>
+          <div class="timer-controls">
+            <button class="btn-pomodoro" (click)="startPomodoro()">
+              <i class="fas fa-play"></i> Start Focus Session
+            </button>
+            <button class="btn-stop" (click)="stopTimer()">
+              <i class="fas fa-stop"></i>
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <!-- Contextual Help System -->
-      <div class="context-help">
-        <div class="help-item" *ngFor="let tip of helpTips" [class.active]="tip.active">
-          <div class="help-icon">
-            <i [class]="tip.icon"></i>
-          </div>
-          <div class="help-content">
-            <h4>{{ tip.title }}</h4>
-            <p>{{ tip.content }}</p>
-          </div>
-          <button class="close-help" (click)="dismissTip(tip.id)">
-            &times;
+      <!-- Collaborative Learning Section -->
+      <div class="glass-card study-groups">
+        <div class="groups-header">
+          <h3><i class="fas fa-users"></i> Study Groups</h3>
+          <button class="btn-new-group">
+            <i class="fas fa-plus"></i> New Group
           </button>
         </div>
-      </div>
-      <footer class="dashboard-footer">
-        <div class="footer-wave"></div>
-        <div class="footer-content">
-          <div class="footer-section">
-            <div class="footer-logo">
-              <span class="gradient-text">OACA</span>
-              <div class="logo-subtitle">Knowledge Hub</div>
+        <div class="group-list">
+          <div class="group-card" *ngFor="let group of activeGroups">
+            <div class="group-info">
+              <div class="group-subject">{{ group.subject }}</div>
+              <div class="group-meta">
+                <span class="members">{{ group.members.length }} members</span>
+                <span class="active-now">{{ group.active }} online</span>
+              </div>
             </div>
-            <p class="footer-description">Empowering growth through continuous learning and mastery.</p>
-          </div>
-          <div class="footer-links">
-            <div class="link-group">
-              <h5 class="link-title">Navigation</h5>
-              <ul>
-                <li><a href="#" class="footer-link">Dashboard</a></li>
-                <li><a href="#" class="footer-link">Progress Analytics</a></li>
-                <li><a href="#" class="footer-link">Achievements</a></li>
-              </ul>
+            <div class="group-members">
+              <div class="member-avatar" *ngFor="let member of group.members">
+                <div class="online-status" [class.online]="member.online"></div>
+              </div>
             </div>
-            <div class="link-group">
-              <h5 class="link-title">Legal</h5>
-              <ul>
-                <li><a href="#" class="footer-link">Privacy Policy</a></li>
-                <li><a href="#" class="footer-link">Terms of Service</a></li>
-                <li><a href="#" class="footer-link">Cookie Settings</a></li>
-              </ul>
-            </div>
+            <button class="join-btn">
+              <i class="fas fa-door-open"></i> Join
+            </button>
           </div>
-          <div class="social-section">
-            <h5 class="link-title">Connect With Us</h5>
-            <div class="social-links">
-              <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <div class="copyright">© 2025 OACA Knowledge Hub. All rights reserved.</div>
-          <div class="footer-credits">
-            Crafted with <i class="fas fa-heart pulse"></i> by OACA Team
-          </div>
-        </div>
-      </footer>
-    </div>
-
-    <div class="modal-overlay" *ngIf="showEditModal">
-      <div class="edit-modal glass-card">
-        <h3>Edit {{ selectedChapter?.name }}</h3>
-        <div class="form-group">
-          <label>Marks (%)</label>
-          <input type="number" [(ngModel)]="selectedChapter.marks" min="0" max="100">
-        </div>
-        <div class="form-group">
-          <label>Rating</label>
-          <div class="star-rating">
-            <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= selectedChapter?.rating"
-              (click)="selectedChapter.rating = star"></i>
-          </div>
-        </div>
-        <div class="modal-actions">
-          <button class="btn-cancel" (click)="closeModal()">Cancel</button>
-          <button class="btn-save" (click)="saveChanges()">Save Changes</button>
         </div>
       </div>
-    </div>
 
+      <!-- Knowledge Vault Section -->
+      <div class="glass-card resource-bank">
+        <h3><i class="fas fa-vault"></i> Knowledge Vault</h3>
+        <div class="resource-filters">
+          <div class="filter" *ngFor="let filter of resourceFilters" [class.active]="activeFilter === filter.id"
+            (click)="activeFilter = filter.id">
+            {{ filter.name }} ({{ filter.count }})
+          </div>
+        </div>
+        <div class="resource-grid">
+          <div class="resource-card" *ngFor="let resource of filteredResources">
+            <div class="resource-icon">
+              <i [class]="resource.icon"></i>
+            </div>
+            <div class="resource-info">
+              <h4>{{ resource.title }}</h4>
+              <div class="resource-meta">
+                <span class="type">{{ resource.type }}</span>
+                <span class="date">{{ resource.date | date: 'shortDate' }}</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" [style.width.%]="resource.progress"></div>
+              </div>
+            </div>
+            <div class="resource-actions">
+              <button class="btn-action">
+                <i class="fas fa-external-link-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam Simulator Section -->
+      <div class="glass-card exam-simulator">
+        <div class="simulator-header">
+          <h3><i class="fas fa-vial"></i> Exam Simulator</h3>
+          <div class="performance-preview">
+            <div class="score">
+              Last Score: <strong>82%</strong>
+            </div>
+            <div class="improvement">
+              <i class="fas fa-chart-line"></i> +12% vs last week
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Contextual Help System -->
+        <div class="context-help">
+          <div class="help-item" *ngFor="let tip of helpTips" [class.active]="tip.active">
+            <div class="help-icon">
+              <i [class]="tip.icon"></i>
+            </div>
+            <div class="help-content">
+              <h4>{{ tip.title }}</h4>
+              <p>{{ tip.content }}</p>
+            </div>
+            <button class="close-help" (click)="dismissTip(tip.id)">
+              &times;
+            </button>
+          </div>
+        </div>
+        <footer class="dashboard-footer">
+          <div class="footer-wave"></div>
+          <div class="footer-content">
+            <div class="footer-section">
+              <div class="footer-logo">
+                <span class="gradient-text">OACA</span>
+                <div class="logo-subtitle">Knowledge Hub</div>
+              </div>
+              <p class="footer-description">Empowering growth through continuous learning and mastery.</p>
+            </div>
+            <div class="footer-links">
+              <div class="link-group">
+                <h5 class="link-title">Navigation</h5>
+                <ul>
+                  <li><a href="#" class="footer-link">Dashboard</a></li>
+                  <li><a href="#" class="footer-link">Progress Analytics</a></li>
+                  <li><a href="#" class="footer-link">Achievements</a></li>
+                </ul>
+              </div>
+              <div class="link-group">
+                <h5 class="link-title">Legal</h5>
+                <ul>
+                  <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                  <li><a href="#" class="footer-link">Terms of Service</a></li>
+                  <li><a href="#" class="footer-link">Cookie Settings</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="social-section">
+              <h5 class="link-title">Connect With Us</h5>
+              <div class="social-links">
+                <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="copyright">© 2025 OACA Knowledge Hub. All rights reserved.</div>
+            <div class="footer-credits">
+              Crafted with <i class="fas fa-heart pulse"></i> by OACA Team
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <div class="modal-overlay" *ngIf="showEditModal">
+        <div class="edit-modal glass-card">
+          <h3>Edit {{ selectedChapter?.name }}</h3>
+          <div class="form-group">
+            <label>Marks (%)</label>
+            <input type="number" [(ngModel)]="selectedChapter.marks" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label>Rating</label>
+            <div class="star-rating">
+              <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= selectedChapter?.rating"
+                (click)="selectedChapter.rating = star; updateRating(selectedChapter.id, star)"></i>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+            <button class="btn-save" (click)="saveChanges()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>

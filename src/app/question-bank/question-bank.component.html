@@ -25,6 +25,11 @@
                         <span>Question Bank</span>
                         <div class="link-underline"></div>
                     </a>
+                    <a routerLink="/login" routerLinkActive="active" class="nav-link">
+                        <i class="fas fa-sign-out link-icon"></i>
+                        <span>sign-out </span>
+                        <div class="link-underline"></div>
+                    </a>
                 </div>
 
                 <div class="nav-actions">
@@ -94,7 +99,6 @@
         </div>
 
         <div class="content-grid">
-            <!-- Filter Panel -->
             <div class="filter-panel cosmic-card">
                 <div class="panel-section">
                     <h3><i class="fas fa-filter"></i> Smart Filters</h3>
@@ -120,7 +124,6 @@
                 </div>
             </div>
 
-            <!-- Main Question Panel -->
             <div class="question-panel">
                 <div class="question-actions">
                     <button class="ai-analysis-btn" (click)="analyzeQuestionBank()">
@@ -136,12 +139,10 @@
                     </div>
                 </div>
 
-                <app-question-list [questions]="filteredQuestions" [viewMode]="viewMode"
-                    (questionSelected)="showQuestionDetail($event)">
+                <app-question-list [questions]="filteredQuestions" (questionSelected)="showQuestionDetail($event)">
                 </app-question-list>
             </div>
 
-            <!-- Detail Panel -->
             <div class="detail-panel cosmic-card" [class.active]="selectedQuestion">
                 <div class="detail-content" *ngIf="selectedQuestion">
                     <button class="close-detail" (click)="selectedQuestion = null">
@@ -179,7 +180,6 @@
             </div>
         </div>
 
-        <!-- AI Generator Modal -->
         <div class="ai-generator-modal" [class.active]="showAIGenerator">
             <div class="modal-content cosmic-card">
                 <div class="modal-header">
@@ -190,7 +190,7 @@
                 </div>
                 <div class="ai-configurator">
                     <div class="input-group">
-                        <label><i class="fas fa-atom"></i> Topic Focus</label>
+                        <label><i class="fas fa-atom"></i> Topic Focus :</label>
                         <div class="cosmic-input">
                             <input type="text" [(ngModel)]="aiTopic"
                                 placeholder="Enter aviation topic (e.g. 'RVSM procedures')">

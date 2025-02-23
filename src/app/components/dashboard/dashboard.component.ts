@@ -95,12 +95,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   filteredChapters: any[] = [];
   searchQuery: string = '';
   userId: number | null = null;
+  userStatus: string = '';
   averageScore: number = 0;
   weakChapters: any[] = [];
   showEditModal: boolean = false;
   selectedChapter: any = null;
 
-  // New Analytics Properties
   showAIPanel = false;
   AIQuestion = '';
   AIResponse = '';
@@ -117,7 +117,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     { subject: 'Cycle AIRAC', duration: 30, date: new Date(), progress: 60 }
   ];
 
-  // Update the activeGroups definition:
   activeGroups: StudyGroup[] = [
     {
       subject: 'procédure de travail pour la section AIP',
@@ -187,12 +186,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     { title: 'Quick Learner', unlocked: false }
   ];
 
-  // Chart Instances
   private performanceChart?: Chart;
   private trendChart?: Chart;
   private masteryChart?: Chart;
 
-  // Particles Configuration
   particlesOptions: IOptions = {
     background: {
       color: { value: "transparent" },
@@ -340,12 +337,22 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.testGeminiConnection();
-    this.userId = this.authService.getUserId();
-    if (!this.userId) {
+
+    const userId = this.authService.getUserId();
+    if (!userId) {
       this.router.navigate(['/login']);
       return;
     }
-    this.fetchChapters();
+
+    this.userStatus = this.authService.getStatus() || 'PENDING';
+
+    if (this.userStatus === 'APPROVED') {
+      this.userId = userId;
+      this.fetchChapters();
+    } else {
+      this.chapters = [];
+      this.filteredChapters = [];
+    }
   }
 
 
@@ -372,7 +379,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // AI Assistant Methods
   toggleAIPanel() {
     this.showAIPanel = !this.showAIPanel;
     if (this.showAIPanel) {
@@ -390,7 +396,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.chatMessages.push({ content: question, isUser: true });
     this.AIQuestion = '';
     this.AILoading = true;
-    this.cdr.detectChanges(); // Force UI update
+    this.cdr.detectChanges(); 
 
     try {
       const prompt = `As an aviation exam expert assistant, respond to: "${question}"
@@ -421,7 +427,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     } finally {
       this.AILoading = false;
       this.scrollChatToBottom();
-      this.cdr.detectChanges(); // Force UI update after changes
+      this.cdr.detectChanges(); 
     }
   }
   private scrollChatToBottom() {
@@ -433,7 +439,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  // Study Timer Methods
   startPomodoro() {
     if (this.timerInterval) return;
 
@@ -546,7 +551,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // Data Methods
   fetchChapters() {
     this.chapterService.getAllChapters().subscribe({
       next: (response: any[]) => {
@@ -597,7 +601,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // Utility Methods
   getLast12Months(): string[] {
     const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
     years.reverse();
@@ -610,7 +613,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  // Chapter Management
   openChapterDetails(chapter: any) {
     this.selectedChapter = { ...chapter };
     this.showEditModal = true;

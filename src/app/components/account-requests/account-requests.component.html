@@ -55,7 +55,7 @@
                 <span class="material-icons-outlined">approve</span>
                 <span class="spinner" *ngIf="request.loading"></span>
               </button>
-              <button class="icon-button revoke" *ngIf="request.status === 'APPROVED'"
+              <button class="icon-button revoke" *ngIf="request.status == 'APPROVED'"
                 (click)="revokeAccount(request.id)" [disabled]="request.loading">
                 <span class="material-icons-outlined">block</span>
                 <span class="spinner" *ngIf="request.loading"></span>

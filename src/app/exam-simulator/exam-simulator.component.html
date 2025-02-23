@@ -24,6 +24,11 @@
                     <span>Question Bank</span>
                     <div class="link-underline"></div>
                 </a>
+                <a routerLink="/login" routerLinkActive="active" class="nav-link">
+                    <i class="fas fa-sign-out link-icon"></i>
+                    <span>sign-out </span>
+                    <div class="link-underline"></div>
+                </a>
             </div>
 
             <div class="nav-actions">
@@ -41,7 +46,6 @@
     </div>
 </nav>
 <div class="cyber-glass exam-simulator">
-    <!-- Start Screen -->
     <div *ngIf="!examStarted" class="start-screen">
         <div class="holographic-header">
             <h1 class="neon-title">OACA Aviation Exam Simulator</h1>
@@ -75,8 +79,7 @@
         </button>
     </div>
 
-    <!-- Exam Interface -->
-     <br><br><br><br>
+    <br><br><br><br>
     <div *ngIf="examStarted && !examFinished" [@questionNavigation]="navigationState.direction">
         <div class="exam-header">
             <div class="timer holographic-display">
@@ -147,7 +150,6 @@
         </div>
     </div>
 
-    <!-- Results Screen -->
     <div *ngIf="examFinished" class="results-screen">
         <div class="results-header">
             <h1 class="neon-title">Flight Review Complete</h1>
@@ -164,7 +166,6 @@
             </div>
         </div>
 
-        <!-- AI Study Plan -->
         <div class="ai-study-plan holographic-card">
             <h3 class="ai-section-title">
                 <i class="fas fa-brain-circuit"></i>
@@ -206,7 +207,6 @@
             </div>
         </div>
 
-        <!-- AI Chat Tutor -->
         <div class="ai-chat-tutor" [class.open]="isAIChatOpen">
             <div class="chat-header" (click)="isAIChatOpen = !isAIChatOpen">
                 <div class="chat-title">
@@ -241,7 +241,6 @@
             </div>
         </div>
 
-        <!-- Incorrect Answers -->
         <div class="answers-review">
             <h3 class="review-title">
                 <i class="fas fa-file-magnifying-glass"></i>

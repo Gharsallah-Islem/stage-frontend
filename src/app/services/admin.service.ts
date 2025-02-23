@@ -54,11 +54,10 @@ export class AdminService {
   deleteModule(moduleId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/modules/${moduleId}`);
   }
-  // admin.service.ts
   getAccountRequests(): Observable<any> {
     console.log('Fetching from:', `${this.apiUrl}/account-requests`);
     return this.http.get<any[]>(`${this.apiUrl}/account-requests`).pipe(
-      shareReplay(1), 
+      shareReplay(1),
       tap(data => console.log('Raw API response:', data)),
       catchError(error => {
         console.error('API Error:', error);

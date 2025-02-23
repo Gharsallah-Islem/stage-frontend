@@ -92,7 +92,6 @@ export class QuestionBankComponent implements OnInit {
   }
 
   generateAISuggestions() {
-    // AI-powered filter suggestions
     this.aiSuggestedFilters = this.questions
       .filter(q => q.successRate && q.successRate < 50)
       .map(q => q.category)
@@ -198,7 +197,6 @@ export class QuestionBankComponent implements OnInit {
     this.filterQuestions();
   }
 
-  // Utility methods
   getCategoryColor(category: string): string {
     const colors: { [key: string]: string } = {
       'Regulations': '#6a11cb',

@@ -54,6 +54,25 @@ interface AIChatMessage {
         style({ transform: 'translateX(-100%)', opacity: 0 }),
         animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
       ])
+    ]),
+    trigger('cardFlip', [
+      transition(':increment, :decrement', [
+        style({ transform: 'rotateY(180deg)', opacity: 0 }),
+        animate('500ms cubic-bezier(0.23, 1, 0.32, 1)',
+          style({ transform: 'rotateY(0deg)', opacity: 1 }))
+      ])
+    ]),
+    trigger('chatAnimation', [
+      state('open', style({ transform: 'translateY(0)' })),
+      state('closed', style({ transform: 'translateY(100%)' })),
+      transition('* <=> *', animate('300ms ease-in-out'))
+    ]),
+    trigger('messageAnim', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms {{delay}}ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' }))
+      ], { params: { delay: 0 } })
     ])
   ]
 })
@@ -199,7 +218,227 @@ export class ExamSimulatorComponent implements OnInit, OnDestroy {
         { text: 'Track maintenance schedules', correct: false },
         { text: 'Monitor fuel consumption', correct: false }
       ]
-    }
+    },
+    {
+      id: 11,
+      text: 'What is the primary regulatory body for civil aviation in Tunisia?',
+      category: 'Regulations',
+      difficulty: 'easy',
+      options: [
+        { text: 'Tunisian Air Force', correct: false },
+        {
+          text: 'Office de l Aviation Civile et des Aéroports(OACA)', correct: true
+        },
+        { text: 'Ministry of Transport', correct: false },
+        { text: 'Tunisair', correct: false }
+      ],
+      explanation: 'OACA is responsible for civil aviation regulation and airport management in Tunisia.'
+    },
+    {
+      id: 12,
+      text: 'What is the ICAO designation for Tunis-Carthage International Airport?',
+      category: 'Airspace',
+      difficulty: 'medium',
+      options: [
+        { text: 'DTTA', correct: true },
+        { text: 'TNCA', correct: false },
+        { text: 'TTUN', correct: false },
+        { text: 'DTTC', correct: false }
+      ],
+      explanation: 'DTTA is the ICAO code for Tunis-Carthage Airport, while TUN is its IATA code.'
+    },
+    {
+      id: 13,
+      text: 'What is the minimum visibility required for VFR flights in Tunisian class C airspace?',
+      category: 'Regulations',
+      difficulty: 'hard',
+      options: [
+        { text: '5 km', correct: true },
+        { text: '3 km', correct: false },
+        { text: '8 km', correct: false },
+        { text: '10 km', correct: false }
+      ],
+      explanation: 'As per Tunisian AIP, VFR flights in class C require 5km visibility and remaining clear of clouds.'
+    },
+    {
+      id: 14,
+      text: 'Which frequency is used for Tunis Approach Control?',
+      category: 'Communication',
+      difficulty: 'medium',
+      options: [
+        { text: '118.1 MHz', correct: true },
+        { text: '121.5 MHz', correct: false },
+        { text: '130.0 MHz', correct: false },
+        { text: '108.1 MHz', correct: false }
+      ],
+      explanation: '118.1 MHz is the primary frequency for Tunis Approach Control (verified in AIP Tunisia).'
+    },
+    {
+      id: 15,
+      text: 'What is the transition altitude at Djerba-Zarzis International Airport?',
+      category: 'Procedures',
+      difficulty: 'hard',
+      options: [
+        { text: '4000 feet', correct: false },
+        { text: '5000 feet', correct: false },
+        { text: '3000 feet', correct: true },
+        { text: 'FL060', correct: false }
+      ],
+      explanation: 'Transition altitude at DTTJ (Djerba) is 3000 feet as per Tunisian AIP.'
+    },
+    {
+      id: 16,
+      text: 'Which Tunisian airport requires special noise abatement procedures between 2300-0600 UTC?',
+      category: 'Procedures',
+      difficulty: 'medium',
+      options: [
+        { text: 'Tabarka-Ain Draham', correct: false },
+        { text: 'Tunis-Carthage', correct: true },
+        { text: 'Monastir', correct: false },
+        { text: 'Tozeur', correct: false }
+      ],
+      explanation: 'Tunis-Carthage has strict noise restrictions during night hours.'
+    },
+    {
+      id: 17,
+      text: 'What is the currency symbol for Tunisian aviation publications?',
+      category: 'Regulations',
+      difficulty: 'hard',
+      options: [
+        { text: '28 days', correct: false },
+        { text: '42 days', correct: true },
+        { text: '56 days', correct: false },
+        { text: 'AIRAC cycle', correct: false }
+      ],
+      explanation: 'Tunisian AIP amendments follow a 42-day currency period.'
+    },
+    {
+      id: 18,
+      text: 'Which navigation aid is available at Sfax-Thyna International Airport?',
+      category: 'Avionics',
+      difficulty: 'medium',
+      options: [
+        { text: 'VOR/DME', correct: true },
+        { text: 'ILS CAT III', correct: false },
+        { text: 'NDB', correct: false },
+        { text: 'GPS waypoint only', correct: false }
+      ],
+      explanation: 'DTTX (Sfax) has VOR/DME (SFA) on 113.7 MHz.'
+    },
+    {
+      id: 19,
+      text: 'What is the standard arrival route for flights entering Tunis FIR from the east?',
+      category: 'Airspace',
+      difficulty: 'hard',
+      options: [
+        { text: 'AMBER transition', correct: true },
+        { text: 'BLUE transition', correct: false },
+        { text: 'RED transition', correct: false },
+        { text: 'GREEN transition', correct: false }
+      ],
+      explanation: 'AMBER transition is used for arrivals from eastern Mediterranean routes.'
+    },
+    {
+      id: 20,
+      text: 'Which ICAO Annex applies to aircraft noise certification in Tunisia?',
+      category: 'Regulations',
+      difficulty: 'medium',
+      options: [
+        { text: 'Annex 16 Volume I', correct: true },
+        { text: 'Annex 6', correct: false },
+        { text: 'Annex 14', correct: false },
+        { text: 'Annex 2', correct: false }
+      ],
+      explanation: 'Annex 16 Volume I deals with aircraft noise certification requirements.'
+    },
+    {
+      id: 21,
+      text: 'What is the minimum equipment required for IFR flights in Tunisian airspace?',
+      category: 'Avionics',
+      difficulty: 'hard',
+      options: [
+        { text: 'VHF, GPS, and transponder', correct: false },
+        { text: 'VOR, DME, and ADF', correct: false },
+        { text: 'VHF, suitable navigation equipment, and altimeter', correct: true },
+        { text: 'TCAS and GPWS', correct: false }
+      ],
+      explanation: 'As per OAC regulations, basic IFR requirements follow ICAO Annex 6 standards.'
+    },
+    {
+      id: 22,
+      text: 'Which airspace class surrounds Tunis-Carthage Airport during peak hours?',
+      category: 'Airspace',
+      difficulty: 'medium',
+      options: [
+        { text: 'Class C', correct: false },
+        { text: 'Class D', correct: false },
+        { text: 'Class B', correct: true },
+        { text: 'Class A', correct: false }
+      ],
+      explanation: 'Tunis-Carthage CTR becomes Class B during high-density operations.'
+    },
+    {
+      id: 23,
+      text: 'What is the required documentation for general aviation flights entering Tunisia?',
+      category: 'Regulations',
+      difficulty: 'hard',
+      options: [
+        { text: 'Gendarme approval', correct: false },
+        { text: 'eAPIS filing', correct: false },
+        { text: 'Overflight permit from OACA', correct: true },
+        { text: 'Customs pre-clearance', correct: false }
+      ],
+      explanation: 'Foreign GA flights require prior OACA approval for entry into Tunisian airspace.'
+    },
+    {
+      id: 24,
+      text: 'Which frequency is designated for emergency communications in Tunis FIR?',
+      category: 'Communication',
+      difficulty: 'easy',
+      options: [
+        { text: '121.5 MHz', correct: true },
+        { text: '118.1 MHz', correct: false },
+        { text: '131.8 MHz', correct: false },
+        { text: '123.45 MHz', correct: false }
+      ]
+    },
+    {
+      id: 25,
+      text: 'What is the maximum altitude for VFR flights in Tunisia?',
+      category: 'Regulations',
+      difficulty: 'medium',
+      options: [
+        { text: 'FL100', correct: false },
+        { text: '10,000 feet', correct: false },
+        { text: '3,000 feet AGL', correct: true },
+        { text: '5,000 feet MSL', correct: false }
+      ],
+      explanation: 'VFR flights limited to 3,000 ft AGL unless special authorization obtained.'
+    },
+    {
+      id: 26,
+      text: 'What is the customs clearance procedure for private flights at Djerba Airport?',
+      category: 'Procedures',
+      difficulty: 'hard',
+      options: [
+        { text: 'Prior e-mail notification required', correct: true },
+        { text: 'On-arrival declaration only', correct: false },
+        { text: 'No customs required', correct: false },
+        { text: '24-hour advance notice', correct: false }
+      ]
+    },
+    {
+      id: 27,
+      text: 'Which Tunisian airport has CAT II ILS capabilities?',
+      category: 'Avionics',
+      difficulty: 'medium',
+      options: [
+        { text: 'Tunis-Carthage (DTTA)', correct: true },
+        { text: 'Djerba (DTTJ)', correct: false },
+        { text: 'Sfax (DTTX)', correct: false },
+        { text: 'Tozeur (DTTZ)', correct: false }
+      ]
+    },
   ];
 
 
@@ -278,12 +517,18 @@ export class ExamSimulatorComponent implements OnInit, OnDestroy {
   }
 
   async startExam() {
+    this.questions = this.shuffleArray([...this.questions]).slice(0, 10);
     this.examStarted = true;
     this.startTimer();
   }
+  private shuffleArray(array: Question[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
-  // Previous exam logic (navigation, timer, etc.) remains same
-  // Add AI call to finishExam()
   async finishExam() {
     this.examFinished = true;
     clearInterval(this.timerInterval);
@@ -347,13 +592,13 @@ export class ExamSimulatorComponent implements OnInit, OnDestroy {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
   @HostListener('window:scroll', ['$event'])
-    onWindowScroll() {
-      this.isScrolled = window.pageYOffset > 60;
-    }
-  
-    toggleMobileMenu() {
-      this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    }
+  onWindowScroll() {
+    this.isScrolled = window.pageYOffset > 60;
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 
 
 }
