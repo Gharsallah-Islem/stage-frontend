@@ -55,8 +55,9 @@ export class AllUsersComponent implements OnInit {
   toggleRole(user: any): void {
     const newRole = user.role === 'ADMIN' ? 'USER' : 'ADMIN';
     this.adminService.changeUserRole(user.id, newRole).subscribe({
-      next: () => {
-        user.role = newRole;
+      next: (response: string) => {
+        console.log('Role updated successfully:', response);
+        user.role = newRole;  // Update the UI only on success
       },
       error: (err) => console.error('Error updating role:', err)
     });

@@ -444,12 +444,19 @@ export class ExamSimulatorComponent implements OnInit, OnDestroy {
 
   private genAI = new GoogleGenerativeAI('AIzaSyDsQlOpephNf4bKPaqCy5SWGI-XvCYGtmY');
   geminiModel = this.genAI.getGenerativeModel({
-    model: 'gemini-pro',
+    model: 'gemini-1.5-pro-002',
     safetySettings: [
-      { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
-      { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+      {
+        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+      },
     ],
   });
+
 
   async generateStudyPlan() {
     this.isGeneratingPlan = true;

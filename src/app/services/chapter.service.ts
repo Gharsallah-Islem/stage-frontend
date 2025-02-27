@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,18 +11,12 @@ export class ChapterService {
   constructor(private http: HttpClient) { }
 
   getAllChapters(): Observable<any> {
-    const token = localStorage.getItem('token');
-    console.log('Token being sent:', token);
-
-    return this.http.get(`${this.link}`, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      })
-    });
+    console.log('Token before getAllChapters:', localStorage.getItem('token'));
+    return this.http.get(`${this.link}`);
   }
 
-
   createChapter(chapter: any): Observable<any> {
+    console.log('Token before createChapter:', localStorage.getItem('token'));
     return this.http.post(`${this.link}`, chapter);
   }
 }

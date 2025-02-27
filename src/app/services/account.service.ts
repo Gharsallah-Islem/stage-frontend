@@ -11,10 +11,12 @@ export class AccountService {
   constructor(private http: HttpClient) { }
 
   getAllAccountRequests(): Observable<any> {
+    console.log('Token before getAllAccountRequests:', localStorage.getItem('token'));
     return this.http.get(`${this.link}`);
   }
 
   approveAccountRequest(id: number): Observable<any> {
+    console.log('Token before approveAccountRequest:', localStorage.getItem('token'));
     return this.http.put(`${this.link}/${id}/approve`, {});
   }
 }

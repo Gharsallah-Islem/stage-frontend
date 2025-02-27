@@ -7,7 +7,7 @@ export interface Question {
   text: string;
   category: string;
   difficulty: 'easy' | 'medium' | 'hard';
-  options: { text: string, correct: boolean }[];
+  options: { text: string; correct: boolean }[];
   explanation?: string;
   aiGenerated?: boolean;
 }
@@ -17,7 +17,7 @@ export interface Question {
 })
 export class QuestionService {
   private genAI = new GoogleGenerativeAI('AIzaSyDsQlOpephNf4bKPaqCy5SWGI-XvCYGtmY');
-  private model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+  private model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-pro-002' });
 
   constructor(private http: HttpClient) { }
 
@@ -31,9 +31,11 @@ export class QuestionService {
       }`;
 
     try {
+      console.log('Generating AI question with prompt:', prompt);
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
       const jsonString = response.text().replace(/```json|```/g, '');
+      console.log('AI response:', jsonString);
       return this.parseAIQuestion(JSON.parse(jsonString), topic, difficulty);
     } catch (error) {
       console.error('AI Question Generation Error:', error);
@@ -57,14 +59,17 @@ export class QuestionService {
   }
 
   getExamQuestions() {
+    console.log('Token before getExamQuestions:', localStorage.getItem('token'));
     return this.http.get<Question[]>('/api/questions/exam');
   }
 
   getAllQuestions() {
+    console.log('Token before getAllQuestions:', localStorage.getItem('token'));
     return this.http.get<Question[]>('/api/questions');
   }
 
   deleteQuestion(id: number) {
+    console.log('Token before deleteQuestion:', localStorage.getItem('token'));
     return this.http.delete(`/api/questions/${id}`);
   }
 }

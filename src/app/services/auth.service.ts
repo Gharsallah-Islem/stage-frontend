@@ -18,17 +18,23 @@ export class AuthService {
           localStorage.setItem('userId', response.userId);
           localStorage.setItem('role', response.role);
           localStorage.setItem('status', response.status);
+          console.log('Token set after login:', response.token);
+          console.log('User data stored:', { userId: response.userId, role: response.role, status: response.status });
+        } else {
+          console.error('No token received in login response:', response);
         }
       })
     );
   }
 
-
   register(user: any): Observable<any> {
+    console.log('Token before register:', localStorage.getItem('token'));
     return this.http.post(`${this.link}/register`, user, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       responseType: 'text'
-    });
+    }).pipe(
+      tap(() => console.log('Registration request sent'))
+    );
   }
 
   getUserId(): number | null {
@@ -36,17 +42,23 @@ export class AuthService {
     return userId ? parseInt(userId) : null;
   }
 
-
   isLoggedIn(): boolean {
-    return localStorage.getItem('user') !== null;
+    const token = localStorage.getItem('token');
+    return token !== null;
   }
 
   logout(): void {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+    localStorage.removeItem('status');
+    console.log('User logged out, localStorage cleared');
   }
+
   getRole(): string | null {
     return localStorage.getItem('role');
   }
+
   getStatus(): string | null {
     const status = localStorage.getItem('status');
     console.log('Retrieved status from storage:', status);

@@ -8,6 +8,7 @@ import { AccountRequestsComponent } from './components/account-requests/account-
 import { AllModulesComponent } from './components/all-modules/all-modules.component';
 import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 import { authGuard } from './auth.guard';
+import { loginGuard } from './login.guard';
 import { ExamSimulatorComponent } from './exam-simulator/exam-simulator.component';
 import { QuestionBankComponent } from './question-bank/question-bank.component';
 
@@ -15,10 +16,9 @@ export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'exam', component: ExamSimulatorComponent },
-  { path: 'question-bank', component: QuestionBankComponent },
-
+  { path: 'dashboard', component: DashboardComponent, canActivate: [loginGuard] },
+  { path: 'exam', component: ExamSimulatorComponent, canActivate: [loginGuard] },
+  { path: 'question-bank', component: QuestionBankComponent, canActivate: [loginGuard] },
   {
     path: 'dashboard/admin-dashboard',
     component: AdminDashboardComponent,
