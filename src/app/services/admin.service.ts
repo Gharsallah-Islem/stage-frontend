@@ -46,9 +46,9 @@ export class AdminService {
     return this.http.put(
       `${this.apiUrl}/users/${userId}/role`,
       { role: newRole },
-      { responseType: 'text' as 'json' }  // Expect plain text response
+      { responseType: 'text' as 'json' }
     ).pipe(
-      tap(response => console.log('Role change response:', response)),  // Log the response
+      tap(response => console.log('Role change response:', response)),
       catchError((error: HttpErrorResponse) => {
         console.error('Error changing user role:', error);
         return throwError(() => error);
@@ -134,6 +134,16 @@ export class AdminService {
     return this.http.get<any[]>(`${this.apiUrl}/exam-results`).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error fetching exam results:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getGlobalAverageScore(): Observable<number> {
+    console.log('Token before getGlobalAverageScore:', localStorage.getItem('token'));
+    return this.http.get<number>(`${this.apiUrl}/exam-results/global-average`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching global average score:', error);
         return throwError(() => error);
       })
     );

@@ -1,22 +1,37 @@
+/* CSS Variables */
+:root {
+    --primary-color: #00eaff;
+    /* Neon Cyan */
+    --secondary-color: #ff00ff;
+    /* Neon Magenta */
+    --accent-color: #ffd700;
+    /* Gold */
+    --background-color: #0d1b2a;
+    /* Deep Space Blue */
+    --text-color: #ffffff;
+    /* White for contrast */
+    --glow-color: rgba(0, 234, 255, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.7);
+}
+
 /* Global Styles */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    /* Futuristic font */
+    background: var(--background-color);
+    overflow: hidden;
 }
 
-/* Netflix-Like Container */
+/* Main Container */
 .netflix-login-container {
     position: relative;
     height: 100vh;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-h1 {
-    color: azure;
+    perspective: 1200px;
+    /* Enhanced 3D depth */
 }
 
 /* Background Image */
@@ -26,155 +41,278 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -2;
 }
 
 .background-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
 }
 
-/* Overlay */
-.overlay {
+/* Holographic Overlay */
+.holo-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    /* Dark overlay */
+    background: radial-gradient(circle, rgba(0, 234, 255, 0.2) 0%, rgba(255, 0, 255, 0.1) 50%, transparent 70%);
+    animation: holoPulse 10s infinite ease-in-out;
+    z-index: -1;
+}
+
+@keyframes holoPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Particle System */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--glow-color);
+    animation: floatUp 12s infinite ease-in-out;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 /* Form Container */
 .form-container {
     position: relative;
-    z-index: 1;
-    max-width: 450px;
+    z-index: 2;
+    max-width: 550px;
     width: 100%;
     padding: 60px;
-    background: rgba(0, 0, 0, 0.75);
-    /* Slightly transparent background */
-    border-radius: 8px;
-    animation: fadeIn 1s ease-in-out;
+    background: rgba(255, 255, 255, 0.1);
+    /* Glassmorphism */
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px var(--shadow-color), inset 0 0 20px rgba(0, 234, 255, 0.3);
+    transform: translateZ(60px) rotateX(5deg);
+    /* Static 3D tilt */
 }
 
-.form-container h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+/* Heading */
+h1 {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
+    font-size: 3rem;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* Form Group */
 .form-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 10px;
-    background: #333;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
     border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 1rem;
+    border-bottom: 2px solid var(--primary-color);
+    border-radius: 8px 8px 0 0;
+    color: var(--text-color);
+    font-size: 1.2rem;
     outline: none;
+    transition: all 0.3s ease;
 }
 
 .form-group input:focus {
-    background: #444;
+    box-shadow: 0 0 15px var(--glow-color);
+    border-bottom-color: var(--secondary-color);
+}
+
+.form-group input::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.4s ease;
+    transform: translateX(-50%);
+}
+
+.form-group input:focus::after {
+    width: 100%;
 }
 
 .form-group label {
     position: absolute;
     top: 50%;
-    left: 10px;
+    left: 15px;
     transform: translateY(-50%);
-    color: #8c8c8c;
-    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
     transition: all 0.3s ease;
+    pointer-events: none;
 }
 
 .form-group input:focus+label,
 .form-group input:not(:placeholder-shown)+label {
-    top: 10px;
-    font-size: 0.8rem;
-    color: #fff;
+    top: -15px;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+/* Error Message */
+.error-message {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-top: 5px;
+    text-shadow: 0 0 5px var(--secondary-color);
 }
 
 /* Button */
 button {
     width: 100%;
-    padding: 10px;
-    background: #e50914;
-    /* Netflix red */
-    color: #fff;
+    padding: 18px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
     border: none;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 234, 255, 0.5);
+    transform: translateZ(20px);
+    transition: all 0.3s ease;
 }
 
 button:hover {
-    background: #f40612;
-    /* Brighter red on hover */
+    box-shadow: 0 15px 30px rgba(0, 234, 255, 0.7);
+    transform: translateZ(25px) translateY(-5px);
 }
 
-/* Form Options */
-.form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
+button:active {
+    transform: translateZ(15px) translateY(2px);
 }
 
-.form-options label {
-    display: flex;
-    align-items: center;
-    color: #b3b3b3;
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
 }
 
-.form-options input {
-    margin-right: 5px;
+button:active::before {
+    width: 400%;
+    height: 400%;
 }
 
-.form-options a {
-    color: #b3b3b3;
-    text-decoration: none;
+/* Spinner */
+.spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--text-color);
+    animation: spin 1s infinite ease-in-out;
 }
 
-.form-options a:hover {
-    text-decoration: underline;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Sign Up Link */
+/* Signup Link */
 .signup-link {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #b3b3b3;
+    margin-top: 25px;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .signup-link a {
-    color: #fff;
+    color: var(--accent-color);
     text-decoration: none;
+    text-shadow: 0 0 5px var(--glow-color);
 }
 
 .signup-link a:hover {
     text-decoration: underline;
+    color: var(--secondary-color);
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
+/* Decorative Orbs */
+.deco-orb {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(15px);
+    animation: orbPulse 4s infinite ease-in-out;
+    z-index: 1;
+}
+
+.deco-orb.top-left {
+    top: -30px;
+    left: -30px;
+}
+
+.deco-orb.bottom-right {
+    bottom: -30px;
+    right: -30px;
+}
+
+@keyframes orbPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
     }
 
-    to {
+    50% {
+        transform: scale(1.2);
         opacity: 1;
-        transform: translateY(0);
     }
 }

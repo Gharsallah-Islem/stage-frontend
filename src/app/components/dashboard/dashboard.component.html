@@ -221,9 +221,9 @@
             <h3><i class="fas fa-chart-pie me-2"></i>Performance</h3>
             <canvas #performanceChart id="performanceChart"></canvas>
           </div>
-          <div class="glass-card mastery-chart card-3d" @fadeIn>
+          <div class="chart-container">
             <h3><i class="fas fa-trend-up me-2"></i>Trend</h3>
-            <canvas #trendChart id="trendChart"></canvas>
+            <canvas #trendChart></canvas>
           </div>
 
           <div class="glass-card resource-card card-3d" @fadeIn>
@@ -385,11 +385,11 @@
         </div>
       </div>
       <div class="simulator-options">
-        <div class="option-card card-3d" (click)="startPracticeExam('timed')">
+        <div class="option-card card-3d" routerLink="/exam">
           <h4>Timed Exam</h4>
           <p>Practice under real exam conditions</p>
         </div>
-        <div class="option-card card-3d" (click)="startPracticeExam('adaptive')">
+        <div class="option-card card-3d" (click)="startPracticeExam('adaptive')" routerLink="/exam">
           <h4>Adaptive Exam</h4>
           <p>Customized based on your performance</p>
         </div>

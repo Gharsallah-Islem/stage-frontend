@@ -23,16 +23,19 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class AllUsersComponent implements OnInit {
   users: any[] = [];
   examResults: any[] = [];
+  globalAverageScore: number | null = null;
 
   constructor(private adminService: AdminService) { }
 
   ngOnInit(): void {
     forkJoin({
       users: this.adminService.getAllUsers(),
-      examResults: this.adminService.getExamResults()
-    }).subscribe(({ users, examResults }) => {
+      examResults: this.adminService.getExamResults(),
+      globalAverage: this.adminService.getGlobalAverageScore()
+    }).subscribe(({ users, examResults, globalAverage }) => {
       this.users = users;
       this.examResults = examResults;
+      this.globalAverageScore = globalAverage;
       this.computeAverages();
     });
   }
@@ -40,7 +43,7 @@ export class AllUsersComponent implements OnInit {
   computeAverages(): void {
     if (this.users.length && this.examResults.length) {
       this.users.forEach(user => {
-        const userResults = this.examResults.filter((er: any) => +er.user_id === +user.id);
+        const userResults = this.examResults.filter((er: any) => +er.user.id === +user.id);
         console.log(`User ${user.id} exam results count: ${userResults.length}`, userResults);
         if (userResults.length > 0) {
           const totalScore = userResults.reduce((sum: number, result: any) => sum + Number(result.score), 0);
@@ -57,7 +60,7 @@ export class AllUsersComponent implements OnInit {
     this.adminService.changeUserRole(user.id, newRole).subscribe({
       next: (response: string) => {
         console.log('Role updated successfully:', response);
-        user.role = newRole;  // Update the UI only on success
+        user.role = newRole;
       },
       error: (err) => console.error('Error updating role:', err)
     });

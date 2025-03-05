@@ -1,5 +1,6 @@
 <div class="users-container">
     <h2>👥 All Users</h2>
+    <p *ngIf="globalAverageScore !== null">Global Average Score: {{ globalAverageScore | number:'1.0-2' }}%</p>
 
     <table>
         <thead>

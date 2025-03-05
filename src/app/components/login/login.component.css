@@ -1,22 +1,27 @@
-/* Global Styles */
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    color: #fff;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Netflix-Like Container */
-.netflix-login-container {
-    position: relative;
+body {
+    background: #fff;
+    /* Fallback background */
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-h1 {
-    color: azure;
+/* Login Container */
+.login-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
 }
 
 /* Background Image */
@@ -26,16 +31,13 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    background-image: url('https://wallpapercat.com/w/full/5/7/d/1274752-3840x2160-desktop-4k-aircraft-wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
 }
 
-.background-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Overlay */
+/* Overlay for Readability */
 .overlay {
     position: absolute;
     top: 0;
@@ -44,25 +46,32 @@ h1 {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     /* Dark overlay */
-    z-index: 0;
+    z-index: -1;
 }
 
-/* Form Container */
-.form-container {
-    position: relative;
-    z-index: 1;
-    max-width: 450px;
+/* Form Card */
+.form-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
     width: 100%;
-    padding: 60px;
-    background: rgba(0, 0, 0, 0.75);
-    /* Slightly transparent background */
-    border-radius: 8px;
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 0.8s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-container h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+.form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #222;
 }
 
 /* Form Group */
@@ -73,100 +82,102 @@ h1 {
 
 .form-group input {
     width: 100%;
-    padding: 10px;
-    background: #333;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 1rem;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
     outline: none;
+    transition: border 0.3s ease;
 }
 
 .form-group input:focus {
-    background: #444;
+    border-color: #ff4d4d;
 }
 
 .form-group label {
     position: absolute;
     top: 50%;
-    left: 10px;
+    left: 12px;
     transform: translateY(-50%);
-    color: #8c8c8c;
-    font-size: 1rem;
+    font-size: 16px;
+    color: #999;
+    pointer-events: none;
     transition: all 0.3s ease;
 }
 
 .form-group input:focus+label,
 .form-group input:not(:placeholder-shown)+label {
-    top: 10px;
-    font-size: 0.8rem;
-    color: #fff;
+    top: 5px;
+    font-size: 12px;
+    color: #ff4d4d;
 }
 
 /* Button */
 button {
     width: 100%;
-    padding: 10px;
-    background: #e50914;
-    /* Netflix red */
+    padding: 12px;
+    background: #ff4d4d;
     color: #fff;
     border: none;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 button:hover {
-    background: #f40612;
-    /* Brighter red on hover */
+    background: #e03e3e;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
 }
 
-/* Form Options */
-.form-options {
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Options */
+.options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
+    margin-top: 20px;
+    font-size: 14px;
 }
 
-.form-options label {
+.remember-me {
     display: flex;
     align-items: center;
-    color: #b3b3b3;
+    gap: 5px;
 }
 
-.form-options input {
-    margin-right: 5px;
+.remember-me label {
+    color: #333;
 }
 
-.form-options a {
-    color: #b3b3b3;
+a {
+    color: #ff4d4d;
     text-decoration: none;
 }
 
-.form-options a:hover {
+a:hover {
     text-decoration: underline;
 }
 
-/* Sign Up Link */
+/* Signup Link */
 .signup-link {
+    text-align: center;
     margin-top: 20px;
-    font-size: 0.9rem;
-    color: #b3b3b3;
+    font-size: 14px;
+    color: #333;
 }
 
 .signup-link a {
-    color: #fff;
-    text-decoration: none;
+    color: #ff4d4d;
+    font-weight: 500;
 }
 
-.signup-link a:hover {
-    text-decoration: underline;
-}
-
-/* Animations */
+/* Animation */
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -4,7 +4,6 @@
             <a routerLink="/dashboard" class="brand-logo">
                 <span class="brand-text">OACA Hub</span>
             </a>
-
             <div class="nav-links" [class.active]="isMobileMenuOpen">
                 <div class="nav-link-wrapper">
                     <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
@@ -13,13 +12,11 @@
                         <span>Dashboard</span>
                         <div class="link-underline"></div>
                     </a>
-
                     <a routerLink="/exam" routerLinkActive="active" class="nav-link">
                         <i class="fas fa-puzzle-piece link-icon"></i>
                         <span>Exam Simulator</span>
                         <div class="link-underline"></div>
                     </a>
-
                     <a routerLink="/question-bank" routerLinkActive="active" class="nav-link">
                         <i class="fas fa-database link-icon"></i>
                         <span>Question Bank</span>
@@ -27,18 +24,16 @@
                     </a>
                     <a routerLink="/login" routerLinkActive="active" class="nav-link">
                         <i class="fas fa-sign-out link-icon"></i>
-                        <span>sign-out </span>
+                        <span>Sign Out</span>
                         <div class="link-underline"></div>
                     </a>
                 </div>
-
                 <div class="nav-actions">
                     <button class="user-menu">
                         <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
             </div>
-
             <button class="hamburger" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
                 <span class="hamburger-box">
                     <span class="hamburger-inner"></span>
@@ -82,7 +77,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="controls-panel">
                 <div class="search-box cosmic-input">
                     <input type="text" placeholder="Search aviation knowledge..." [(ngModel)]="searchQuery"
@@ -97,7 +91,6 @@
                 </button>
             </div>
         </div>
-
         <div class="content-grid">
             <div class="filter-panel cosmic-card">
                 <div class="panel-section">
@@ -106,11 +99,8 @@
                         <p>AI Suggestions: {{aiSuggestedFilters.join(', ')}}</p>
                     </div>
                 </div>
-
                 <app-question-category [categories]="categories"
-                    (categoryChange)="selectedCategory = $event; filterQuestions()">
-                </app-question-category>
-
+                    (categoryChange)="selectedCategory = $event; filterQuestions()"></app-question-category>
                 <div class="difficulty-filter">
                     <h4><i class="fas fa-chart-line"></i> Difficulty Matrix</h4>
                     <div class="difficulty-levels">
@@ -123,7 +113,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="question-panel">
                 <div class="question-actions">
                     <button class="ai-analysis-btn" (click)="analyzeQuestionBank()">
@@ -138,11 +127,9 @@
                         </button>
                     </div>
                 </div>
-
-                <app-question-list [questions]="filteredQuestions" (questionSelected)="showQuestionDetail($event)">
-                </app-question-list>
+                <app-question-list [questions]="filteredQuestions"
+                    (questionSelected)="showQuestionDetail($event)"></app-question-list>
             </div>
-
             <div class="detail-panel cosmic-card" [class.active]="selectedQuestion">
                 <div class="detail-content" *ngIf="selectedQuestion">
                     <button class="close-detail" (click)="selectedQuestion = null">
@@ -151,15 +138,12 @@
                     <div class="question-header">
                         <h3 class="question-title">{{selectedQuestion.text}}</h3>
                         <div class="question-meta">
-                            <span class="category-tag {{selectedQuestion.category.toLowerCase()}}">
-                                {{selectedQuestion.category}}
-                            </span>
-                            <span class="difficulty-badge {{selectedQuestion.difficulty}}">
-                                {{selectedQuestion.difficulty}}
-                            </span>
+                            <span
+                                class="category-tag {{selectedQuestion.category.toLowerCase()}}">{{selectedQuestion.category}}</span>
+                            <span
+                                class="difficulty-badge {{selectedQuestion.difficulty}}">{{selectedQuestion.difficulty}}</span>
                         </div>
                     </div>
-
                     <div class="question-options">
                         <div *ngFor="let opt of selectedQuestion.options; let i = index" class="option-card"
                             [class.correct]="opt.correct">
@@ -171,7 +155,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="ai-analysis" *ngIf="selectedQuestion.aiGenerated">
                         <h4><i class="fas fa-brain"></i> AI Insights</h4>
                         <p>{{getQuestionAnalysis(selectedQuestion)}}</p>
@@ -179,7 +162,6 @@
                 </div>
             </div>
         </div>
-
         <div class="ai-generator-modal" [class.active]="showAIGenerator">
             <div class="modal-content cosmic-card">
                 <div class="modal-header">
@@ -197,7 +179,6 @@
                             <div class="input-glow"></div>
                         </div>
                     </div>
-
                     <div class="input-group">
                         <label><i class="fas fa-chart-network"></i> Complexity Matrix</label>
                         <div class="difficulty-selector">
@@ -209,7 +190,6 @@
                             </button>
                         </div>
                     </div>
-
                     <div class="advanced-options">
                         <h4><i class="fas fa-cogs"></i> Generator Settings</h4>
                         <div class="option-grid">
@@ -227,7 +207,6 @@
                             </div>
                         </div>
                     </div>
-
                     <button class="generate-btn holographic" (click)="generateAIQuestion()"
                         [disabled]="aiLoading || !aiTopic">
                         <div class="btn-content">

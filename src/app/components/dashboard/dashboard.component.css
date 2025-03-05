@@ -1955,3 +1955,14 @@ td {
         transform: scale(1.2);
     }
 }
+
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    /* Prevents excessive horizontal growth */
+    height: 400px;
+    /* Sets a fixed height */
+    margin: 20px auto;
+    overflow: hidden;
+    /* Clips any overflow */
+}

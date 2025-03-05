@@ -1,35 +1,28 @@
-<div class="netflix-login-container">
-  <div class="background-image">
-    <img src="https://wallpapercat.com/w/full/5/7/d/1274752-3840x2160-desktop-4k-aircraft-wallpaper.jpg"
-      alt="Background Image">
-  </div>
-
+<div class="login-container">
+  <div class="background-image"></div>
   <div class="overlay"></div>
-
-  <div class="form-container">
-    <h1>Welcome Back to OACA exam</h1>
+  <div class="form-card">
+    <h1>Welcome Back to OACA Exam</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <input type="email" id="email" formControlName="email" required placeholder="Email or mobile number">
+        <input type="email" id="email" formControlName="email" required placeholder=" " />
         <label for="email">Email or mobile number</label>
       </div>
       <div class="form-group">
-        <input type="password" id="password" formControlName="password" required placeholder="Password">
+        <input type="password" id="password" formControlName="password" required placeholder=" " />
         <label for="password">Password</label>
       </div>
       <button type="submit" [disabled]="loginForm.invalid">Sign In</button>
     </form>
-
     <div class="options">
-      <div>
-        <input type="checkbox" id="remember-me">
-        <label for="remember-me" style="color: azure;">Remember me</label>
-
-        <a href="#" style="color: azure;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Need help?</a><br/><br />
-
-
-        <div class="footer">
-          <p style="color: azure ;">New to OACA? <a routerLink="/signup" style="color: azure;">Sign up now.</a></p>
-        </div>
+      <div class="remember-me">
+        <input type="checkbox" id="remember-me" />
+        <label for="remember-me">Remember me</label>
       </div>
+      <a href="#">Need help?</a>
     </div>
+    <div class="signup-link">
+      <p>New to OACA? <a routerLink="/signup">Sign up now.</a></p>
+    </div>
+  </div>
+</div>

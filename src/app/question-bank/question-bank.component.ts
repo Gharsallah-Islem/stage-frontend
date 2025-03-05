@@ -101,7 +101,7 @@ export class QuestionBankComponent implements OnInit {
 
   calculateQuestionStatistics() {
     this.questionStatistics = {
-      totalUsage: this.questions.length * 3, // Mock data
+      totalUsage: this.questions.length * 3,
       averageSuccess: this.questions.reduce((sum, q) => sum + (q.successRate || 0), 0) / this.questions.length,
       weakAreas: Array.from(new Set(this.questions
         .filter(q => (q.successRate || 0) < 50)

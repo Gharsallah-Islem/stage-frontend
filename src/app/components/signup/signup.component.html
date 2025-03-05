@@ -1,35 +1,41 @@
 <div class="netflix-login-container">
+  <!-- Background Image -->
   <div class="background-image">
     <img src="https://wallpapercat.com/w/full/5/7/d/1274752-3840x2160-desktop-4k-aircraft-wallpaper.jpg"
       alt="Avion Image">
   </div>
 
-  <div class="overlay"></div>
+  <!-- Holographic Overlay -->
+  <div class="holo-overlay"></div>
+
+  <!-- Particle System -->
+  <div class="particles"></div>
 
   <!-- Form Container -->
-  <div class="form-container">
+  <div class="form-container" [@formAnimation]>
     <h1>Sign Up</h1>
-    <form (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" required>
-        <label for="fullName">Full Name</label>
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+      <div class="form-group" *ngFor="let field of fields; let i = index" [@fieldAnimation]="i">
+        <input [type]="field.type" [id]="field.id" [(ngModel)]="field.model" [name]="field.id" required
+          [minlength]="field.minlength" [pattern]="field.pattern" #input="ngModel" (focus)="onInputFocus(i)"
+          (blur)="onInputBlur(i)">
+        <label [for]="field.id" [@labelAnimation]="field.focused ? 'focused' : 'idle'">{{ field.label }}</label>
+        <div *ngIf="input.invalid && input.touched" class="error-message" [@errorAnimation]>
+          {{ field.errorMessage }}
+        </div>
       </div>
-      <div class="form-group">
-        <input type="email" id="email" [(ngModel)]="email" name="email" required>
-        <label for="email">Email</label>
-      </div>
-      <div class="form-group">
-        <input type="text" id="workCode" [(ngModel)]="workCode" name="workCode" required>
-        <label for="workCode">Work Code</label>
-      </div>
-      <div class="form-group">
-        <input type="password" id="password" [(ngModel)]="password" name="password" required>
-        <label for="password">Password</label>
-      </div>
-      <button type="submit">Sign Up</button>
+      <button type="submit" [disabled]="signupForm.invalid || isSubmitting"
+        [@buttonAnimation]="isSubmitting ? 'submitting' : 'idle'">
+        <span *ngIf="!isSubmitting">Sign Up</span>
+        <span *ngIf="isSubmitting" class="spinner"></span>
+      </button>
     </form>
     <div class="signup-link">
       <p>Already have an account? <a routerLink="/login">Login</a>.</p>
     </div>
   </div>
+
+  <!-- Decorative Elements -->
+  <div class="deco-orb top-left"></div>
+  <div class="deco-orb bottom-right"></div>
 </div>
